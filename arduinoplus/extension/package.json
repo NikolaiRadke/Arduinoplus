@@ -1,0 +1,93 @@
+{
+  "name": "arduinoplus",
+  "displayName": "Arduino+",
+  "description": "Essential IDE helpers for Arduino development",
+  "version": "1.0.0",
+  "publisher": "MonsterMaker",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "arduino",
+    "arduinoIDE",
+    "comment",
+    "toggle",
+    "editor",
+    "tools",
+    "snippets"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "arduinoplus.toggleLineComment",
+        "title": "// Toggle Line Comment",
+        "category": "Arduino+",
+        "icon": "$(symbol-operator)"
+      },
+      {
+        "command": "arduinoplus.copyToSnippets",
+        "title": "Copy to Snippets",
+        "category": "Arduino+",
+        "icon": "$(files)"
+      },
+      {
+        "command": "arduinoplus.moveToSnippets",
+        "title": "Move to Snippets",
+        "category": "Arduino+",
+        "icon": "$(arrow-right)"
+      },
+      {
+        "command": "arduinoplus.openSnippetPanel",
+        "title": "Open Snippet Panel",
+        "category": "Arduino+",
+        "icon": "$(list-unordered)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "arduinoplus.toggleLineComment",
+        "key": "ctrl+/",
+        "mac": "cmd+/",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "arduinoplus.toggleLineComment",
+          "group": "1_modification@1"
+        },
+        {
+          "command": "arduinoplus.copyToSnippets",
+          "group": "9_cutcopypaste@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "arduinoplus.moveToSnippets",
+          "group": "9_cutcopypaste@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "arduinoplus.openSnippetPanel",
+          "group": "9_cutcopypaste@3"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NikolaiRadke/Arduinoplus"
+  },
+  "license": "Apache-2.0"
+}
