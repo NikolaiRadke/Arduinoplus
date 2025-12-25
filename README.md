@@ -12,7 +12,7 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 
 ### Failed Features
 
-* *Trigger reset by Command*: Requires unavailable Python dependencies and doesn't work for ESP32-CAM.
+* *Trigger Reset by Command*: Requires unavailable Python dependencies and doesn't work for ESP32-CAM.
 * *Mousewheel Zoom*: Extension API lacks mouse wheel event access.
 * *Compiler Flag Manager*:  System files get overwritten on board updates.
 * *Serial Monitor Search* - Extension API has no access to Serial Monitor.
