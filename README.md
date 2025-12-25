@@ -1,3 +1,4 @@
+![AI.duino](http://www.nikolairadke.de/aiduino/arduinoplus_back.png)
 # Arduino+ for a better Arduino IDE
 
 Arduino integrates features that are terribly missed in the IDE for a better coding experience.
