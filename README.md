@@ -10,6 +10,12 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 * **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets.
 * **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The sketch needs to be saved fist. Alas, anchors are lost when the sketch is renamed.
 
+### Failed Features
+
+* *Trigger reset by Command*: Requires unavailable Python dependencies and doesn't work for ESP32-CAM.
+* *Mousewheel Zoom*: Extension API lacks mouse wheel event access.
+* *Compiler Flag Manager*:  System files get overwritten on board updates.
+
 ## Installation
 
 You need the VSIX file *arduinoplus.vsix* in the same folder with the installer. The installer will install the plugin in your home folder. 
