@@ -22,9 +22,7 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 You need the VSIX file *arduinoplus.vsix* in the same folder with the installer. The installer will install the plugin in your home folder. 
   
 #### Windows
-```
-Run install_arduinoplus_windows.bat as administrator
-```
+Run ``` install_arduinoplus_windows.bat ``` as administrator
 
 #### Linux
 ```
