@@ -2,5 +2,7 @@
 ## 1.0.0 25.12.2025
 
 ## Features
-Added toggle line comments
-Added code snippets manager
+Added Toggle Line Comments
+Added Code Snippets Manager
+Added Sketch Anchors
+Added Duplicate Line

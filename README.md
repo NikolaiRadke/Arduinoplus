@@ -6,6 +6,7 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 ## Features
 
 * **Toggle Line Comments**: Quickly comment/uncomment lines with `//` - perfect for debugging!
+* **Duplicate Line**: Duplicates the selected line and inserts it below.  
 * **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets.
 * **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The sketch needs to be saved fist. Alas, anchors are lost when the sketch is renamed.
 

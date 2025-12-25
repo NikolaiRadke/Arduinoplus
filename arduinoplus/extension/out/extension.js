@@ -12,6 +12,7 @@ const toggleLineComment = require('./features/toggleLineComment');
 const { SnippetManager } = require('./features/snippetManager');
 const { showSnippetPanel, copyToSnippets, moveToSnippets } = require('./features/snippetPanel');
 const { AnchorManager } = require('./features/anchorManager');
+const { duplicateLine } = require('./features/duplicateLine');
 
 // Global manager instances
 let snippetManager;
@@ -62,6 +63,10 @@ function activate(context) {
         {
             name: 'arduinoplus.showAnchors',
             handler: () => anchorManager.showAnchorList()
+        },
+        {
+            name: 'arduinoplus.duplicateLine',
+            handler: () => duplicateLine()
         }
     ];
 

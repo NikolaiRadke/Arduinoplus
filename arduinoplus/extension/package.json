@@ -64,6 +64,12 @@
         "title": "Show Anchors",
         "category": "Arduino+",
         "icon": "$(list-flat)"
+      },
+      {
+        "command": "arduinoplus.duplicateLine",
+        "title": "Duplicate Line Down",
+        "category": "Arduino+",
+        "icon": "$(files)"
       }
     ],
     "keybindings": [
@@ -84,35 +90,45 @@
         "key": "ctrl+shift+a",
         "mac": "cmd+shift+a",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "arduinoplus.duplicateLine",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "editorTextFocus"
       }
     ],
-"menus": {
+    "menus": {
       "editor/context": [
         {
           "command": "arduinoplus.toggleLineComment",
           "group": "1_arduinoplus@1"
         },
         {
-          "command": "arduinoplus.copyToSnippets",
-          "group": "1_arduinoplus@2",
-          "when": "editorHasSelection"
+          "command": "arduinoplus.duplicateLine",
+          "group": "1_arduinoplus@2"
         },
         {
-          "command": "arduinoplus.moveToSnippets",
+          "command": "arduinoplus.copyToSnippets",
           "group": "1_arduinoplus@3",
           "when": "editorHasSelection"
         },
         {
-          "command": "arduinoplus.openSnippetPanel",
-          "group": "1_arduinoplus@4"
+          "command": "arduinoplus.moveToSnippets",
+          "group": "1_arduinoplus@4",
+          "when": "editorHasSelection"
         },
         {
-          "command": "arduinoplus.setAnchor",
+          "command": "arduinoplus.openSnippetPanel",
           "group": "1_arduinoplus@5"
         },
         {
-          "command": "arduinoplus.showAnchors",
+          "command": "arduinoplus.setAnchor",
           "group": "1_arduinoplus@6"
+        },
+        {
+          "command": "arduinoplus.showAnchors",
+          "group": "1_arduinoplus@7"
         }
       ]
     }
