@@ -11,9 +11,11 @@ const vscode = require('vscode');
 const toggleLineComment = require('./features/toggleLineComment');
 const { SnippetManager } = require('./features/snippetManager');
 const { showSnippetPanel, copyToSnippets, moveToSnippets } = require('./features/snippetPanel');
+const { AnchorManager } = require('./features/anchorManager');
 
-// Global snippet manager instance
+// Global manager instances
 let snippetManager;
+let anchorManager;
 
 /**
  * Extension activation
@@ -21,8 +23,19 @@ let snippetManager;
 function activate(context) {
     console.log('Arduino+ is now active!');
 
-    // Initialize snippet manager (file-based, no context needed)
+    // Initialize snippet manager
     snippetManager = new SnippetManager();
+
+    // Initialize anchor manager
+    anchorManager = new AnchorManager();
+    anchorManager.createStatusBar(context);
+
+    // Update status bar when active editor changes
+    context.subscriptions.push(
+        vscode.window.onDidChangeActiveTextEditor(() => {
+            anchorManager.updateStatusBar();
+        })
+    );
 
     // Register commands
     const commands = [
@@ -41,6 +54,14 @@ function activate(context) {
         {
             name: 'arduinoplus.openSnippetPanel',
             handler: () => showSnippetPanel(snippetManager)
+        },
+        {
+            name: 'arduinoplus.setAnchor',
+            handler: () => anchorManager.addAnchor()
+        },
+        {
+            name: 'arduinoplus.showAnchors',
+            handler: () => anchorManager.showAnchorList()
         }
     ];
 

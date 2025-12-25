@@ -31,7 +31,7 @@ class SnippetManager {
             try {
                 fs.mkdirSync(ARDUINOPLUS_DIR, { recursive: true });
             } catch (error) {
-                console.error('Failed to create .arduinoplus directory:', error);
+                // Silent fail
             }
         }
     }
@@ -49,7 +49,6 @@ class SnippetManager {
             const data = fs.readFileSync(SNIPPETS_FILE, 'utf8');
             this.snippets = JSON.parse(data);
         } catch (error) {
-            console.error('Failed to load snippets:', error);
             this.snippets = [];
         }
     }
@@ -71,8 +70,6 @@ class SnippetManager {
             
             return true;
         } catch (error) {
-            console.error('Failed to save snippets:', error);
-            
             // Cleanup temp file if it exists
             const tempFile = SNIPPETS_FILE + '.tmp';
             if (fs.existsSync(tempFile)) {
