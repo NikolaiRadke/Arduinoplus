@@ -124,6 +124,5 @@
     "type": "git",
     "url": "https://github.com/NikolaiRadke/Arduinoplus"
   },
-  "license": "Apache-2.0",
-  "icon": "icon.png"
+  "license": "Apache-2.0"
 }
