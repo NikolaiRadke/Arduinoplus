@@ -45,5 +45,15 @@ You can access all feaures through the right click context menu.
 ## Related Projects
 
 - **[AI.duino](https://github.com/NikolaiRadke/AI.duino)** - AI-powered assistance for Arduino IDE.
-- **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)** -  Manage your Arduino IDE 2.X extensions.  
+- **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)** -  Manage your Arduino IDE 2.X extensions.
+
+## 💙 Support Arduino+
+
+Arduino+ is free and open source. If it saved your day, consider buying me a coffee! ☕
+
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/NikolaiRadke?style=for-the-badge&logo=github&color=ea4aaa)](https://github.com/sponsors/NikolaiRadke)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/nikolairadke)
+
+Every contribution helps keep this project alive! 🚀
+
 
