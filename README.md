@@ -42,3 +42,5 @@ chmod +x install_arduinoplus_macos.sh
 ## Related Projects
 
 - **[AI.duino](https://github.com/NikolaiRadke/AI.duino)** - AI-powered assistance for Arduino IDE.
+- **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)** -  Manage your Arduino IDE 2.X extensions.  
+
