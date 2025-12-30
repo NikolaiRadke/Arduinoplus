@@ -18,7 +18,7 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 * *Serial Monitor Search:* Extension API has no access to Serial Monitor.
 
 ## Screenshot
-![AI.duino](http://www.nikolairadke.de/aiduino/arduinoplus_screenshot.png)
+![Arduino+](http://www.nikolairadke.de/aiduino/arduinoplus_screenshot.png)
 
 ## Installation
 
