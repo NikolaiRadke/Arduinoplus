@@ -23,7 +23,7 @@ Arduino IDE is not VS Code. A lot of functions are disabled but not documented. 
 
 ## Installation
 
-You need the VSIX file *arduinoplus.vsix* in the same folder with the installer. The installer will install the plugin in your home folder. 
+You need the VSIX file **arduinoplus.vsix** in the same folder with the installer. The installer will install the plugin in your home folder. 
   
 #### Windows
 Run ``` install_arduinoplus_windows.bat ``` as administrator
