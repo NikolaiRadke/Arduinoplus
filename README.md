@@ -38,6 +38,8 @@ chmod +x install_arduinoplus_linux.sh
 chmod +x install_arduinoplus_macos.sh
 ./install_arduinoplus_Install_macos.sh
 ```
+## Usage
+You can access all feaures through the right click context menu.  
 
 ## Related Projects
 
