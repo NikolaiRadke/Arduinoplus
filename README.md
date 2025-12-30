@@ -12,6 +12,7 @@ Arduino integrates features that are terribly missed in the IDE for a better cod
 
 ### Failed Features
 
+Arduino IDE is not VS Code. A lot of functions are disabled but not documented. It's hard to develop an extension so sometimes ideas will fail.  
 * *Trigger Reset by Command:* Requires unavailable Python dependencies and doesn't work for ESP32-CAM.
 * *Mousewheel Zoom:* Extension API lacks mouse wheel event access.
 * *Compiler Flag Manager:*  System files get overwritten on board updates.
