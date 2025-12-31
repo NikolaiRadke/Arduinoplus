@@ -1,0 +1,19 @@
+{
+  "name": "Arduino+",
+  "version": "1.0.0",
+  "directories": [
+    "~/.arduinoplus"
+  ],
+  "files": [
+    "{arduinoIDE}/extensions/arduinoplus.vsix",
+    "{arduinoIDE}/extensions/arduinoplus-*.vsix",
+    "{arduinoIDE}/deployedPlugins/arduinoplus",
+    "{arduinoIDE}/deployedPlugins/arduinoplus-*"
+  ],
+  "globalState": [],
+  "settings": [],
+  "confirm": {
+    "enabled": true,
+    "double": false
+  }
+}
