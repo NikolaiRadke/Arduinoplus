@@ -31,13 +31,13 @@ Run ``` install_arduinoplus_windows.bat ``` as administrator
 #### Linux
 ```
 chmod +x install_arduinoplus_linux.sh
-./install_arduinoplus_install_linux.sh
+./install_arduinoplus_linux.sh
 ```
 
 #### macOS
 ```
 chmod +x install_arduinoplus_macos.sh
-./install_arduinoplus_install_macos.sh
+./install_arduinoplus_macos.sh
 ```
 ## Usage
 You can access all feaures through the right click context menu.  
