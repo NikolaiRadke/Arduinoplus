@@ -235,6 +235,8 @@ class PixelEditor {
     .controls label.title { display: block; margin: 12px 0 4px 0; color: var(--vscode-descriptionForeground); }
     .controls label.title:first-child { margin-top: 0; }
     .options label { display: inline-block; margin: 0 12px 2px 0; white-space: nowrap; }
+    .options.columns { display: grid; grid-template-columns: max-content max-content; column-gap: 16px; row-gap: 2px; }
+    .options.columns label { margin: 0; }
     input[type=text], input[type=number] { padding: 4px 6px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border, transparent); font-family: var(--vscode-editor-font-family); }
     input[type=text] { width: 180px; }
     input[type=number] { width: 56px; }
@@ -263,9 +265,9 @@ class PixelEditor {
     </div>
     <div class="controls">
         <label class="title">${esc(t('lcdchar.mode'))}</label>
-        <div class="options">
+        <div class="options columns">
             <label><input type="radio" name="mode" value="lcd"> ${esc(t('lcdchar.modeLcd'))}</label>
-            <label><input type="radio" name="mode" value="matrix"> ${esc(t('lcdchar.modeMatrix'))}</label><br>
+            <label><input type="radio" name="mode" value="matrix"> ${esc(t('lcdchar.modeMatrix'))}</label>
             <label><input type="radio" name="mode" value="gfx"> ${esc(t('lcdchar.modeGfx'))}</label>
             <label><input type="radio" name="mode" value="xbm"> ${esc(t('lcdchar.modeXbm'))}</label>
         </div>
