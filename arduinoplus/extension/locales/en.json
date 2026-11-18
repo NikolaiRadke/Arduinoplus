@@ -95,5 +95,6 @@
   "lcdchar.invertImage": "Invert image",
   "lcdchar.originalSize": "Original size",
   "lcdchar.closeImage": "Done",
-  "lcdchar.importHint": "Threshold and options redraw the whole image. Paint by hand once you click Done."
+  "lcdchar.importHint": "Threshold and options redraw the whole image. Paint by hand once you click Done.",
+  "lcdchar.auto": "Auto"
 }

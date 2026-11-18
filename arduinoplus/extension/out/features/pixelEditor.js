@@ -308,6 +308,7 @@ class PixelEditor {
                 <span>${esc(t('lcdchar.threshold'))}</span>
                 <input type="range" id="threshold" min="1" max="254" value="128">
                 <span id="thresholdValue">128</span>
+                <button class="secondary small" id="autoThreshold">${esc(t('lcdchar.auto'))}</button>
             </div>
             <div class="row">
                 <label><input type="checkbox" id="dither"> ${esc(t('lcdchar.dither'))}</label>

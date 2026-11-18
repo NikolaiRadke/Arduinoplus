@@ -256,7 +256,7 @@
 
     /**
      * Gray values of the image, fitted into width x height (aspect ratio kept,
-     * centered). Transparent parts become white background.
+     * centered). Transparent parts (and the border) are marked and always stay off.
      */
     function grayFromImage(w, h) {
         const scale = Math.min(w / source.width, h / source.height);
@@ -283,29 +283,101 @@
         out.width = w;
         out.height = h;
         const o = out.getContext('2d');
-        o.fillStyle = '#ffffff';
-        o.fillRect(0, 0, w, h);
         o.imageSmoothingEnabled = true;
         o.drawImage(src, dx, dy, dw, dh);
         const data = o.getImageData(0, 0, w, h).data;
         const gray = new Float32Array(w * h);
+        const transparent = new Uint8Array(w * h);
         for (let i = 0; i < w * h; i++) {
+            // Opaque enough pixels keep their own color, the rest is background
             gray[i] = 0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2];
+            transparent[i] = data[i * 4 + 3] < 128 ? 1 : 0;
         }
-        return gray;
+        return { gray, transparent, rect: { x: dx, y: dy, w: dw, h: dh } };
+    }
+
+    /**
+     * Otsu's method: the threshold that separates the two main
+     * brightness groups of the image best (only the image area, not the border)
+     */
+    function otsuThreshold(gray, transparent, w, rect) {
+        const histogram = new Array(256).fill(0);
+        let total = 0;
+        for (let y = rect.y; y < rect.y + rect.h; y++) {
+            for (let x = rect.x; x < rect.x + rect.w; x++) {
+                if (transparent[y * w + x]) continue;
+                histogram[Math.max(0, Math.min(255, Math.round(gray[y * w + x])))]++;
+                total++;
+            }
+        }
+        let sum = 0;
+        for (let i = 0; i < 256; i++) sum += i * histogram[i];
+        let sumBack = 0;
+        let weightBack = 0;
+        let best = 0;
+        let threshold = 128;
+        let contrast = 0;
+        for (let i = 0; i < 256; i++) {
+            weightBack += histogram[i];
+            if (weightBack === 0) continue;
+            const weightFore = total - weightBack;
+            if (weightFore === 0) break;
+            sumBack += i * histogram[i];
+            const meanBack = sumBack / weightBack;
+            const meanFore = (sum - sumBack) / weightFore;
+            const between = weightBack * weightFore * (meanBack - meanFore) ** 2;
+            if (between > best) {
+                best = between;
+                threshold = i + 1;
+                contrast = meanFore - meanBack;
+            }
+        }
+        return { threshold: Math.max(1, Math.min(254, threshold)), contrast };
+    }
+
+    /**
+     * Automatic threshold and invert:
+     * - Image with much transparency: the opaque part is the motif, dark lights up
+     * - One-colored motif: everything opaque lights up
+     * - Opaque image: the smaller brightness group lights up (the motif of a logo)
+     */
+    function autoAdjust() {
+        const { gray, transparent, rect } = grayFromImage(width, height);
+        let { threshold, contrast } = otsuThreshold(gray, transparent, width, rect);
+        let dark = 0;
+        let visible = 0;
+        for (let y = rect.y; y < rect.y + rect.h; y++) {
+            for (let x = rect.x; x < rect.x + rect.w; x++) {
+                const i = y * width + x;
+                if (transparent[i]) continue;
+                visible++;
+                if (gray[i] < threshold) dark++;
+            }
+        }
+        const mostlyTransparent = visible < rect.w * rect.h * 0.8;
+        let invert = false;
+        if (contrast < 48) {
+            // One color: light it all up if it sits on transparency, else default
+            threshold = mostlyTransparent ? 254 : 128;
+        } else if (!mostlyTransparent) {
+            invert = dark > visible / 2;
+        }
+        document.getElementById('threshold').value = threshold;
+        document.getElementById('invertImage').checked = invert;
+        applyImage();
     }
 
     /**
      * Dark pixels become "on". Optional Floyd-Steinberg dithering for photos.
      */
-    function toPixels(gray, w, h, threshold, dither, invert) {
+    function toPixels(gray, transparent, w, h, threshold, dither, invert) {
         const g = Float32Array.from(gray);
         const out = new Uint8Array(w * h);
         for (let y = 0; y < h; y++) {
             for (let x = 0; x < w; x++) {
                 const i = y * w + x;
                 const on = g[i] < threshold;
-                out[i] = on !== invert ? 1 : 0;
+                out[i] = !transparent[i] && on !== invert ? 1 : 0;
                 if (!dither) continue;
                 const error = g[i] - (on ? 0 : 255);
                 if (x + 1 < w) g[i + 1] += error * 7 / 16;
@@ -322,7 +394,8 @@
     function applyImage() {
         const threshold = +document.getElementById('threshold').value;
         document.getElementById('thresholdValue').textContent = threshold;
-        pixels = toPixels(grayFromImage(width, height), width, height, threshold,
+        const image = grayFromImage(width, height);
+        pixels = toPixels(image.gray, image.transparent, width, height, threshold,
             document.getElementById('dither').checked, document.getElementById('invertImage').checked);
         const bitmap = mode === 'gfx' || mode === 'xbm';
         document.getElementById('originalSize').style.display =
@@ -342,6 +415,7 @@
     document.getElementById('invertImage').addEventListener('change', () => source && applyImage());
     document.getElementById('originalSize').addEventListener('click', () => source && resize(source.width, source.height));
     document.getElementById('closeImage').addEventListener('click', closeImage);
+    document.getElementById('autoThreshold').addEventListener('click', () => source && autoAdjust());
 
     function loadImage(dataUrl, name) {
         const img = new Image();
@@ -350,7 +424,7 @@
             nameInput.value = name.replace(/[^A-Za-z0-9_]/g, '_');
             document.getElementById('imageName').textContent = name + ' (' + source.width + '×' + source.height + ')';
             document.getElementById('importPanel').style.display = 'block';
-            applyImage();
+            autoAdjust();
         };
         img.onerror = () => vscode.postMessage({ command: 'imageError', error: name });
         img.src = dataUrl;

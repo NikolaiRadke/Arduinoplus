@@ -95,5 +95,6 @@
   "lcdchar.invertImage": "Inverser l'image",
   "lcdchar.originalSize": "Taille d'origine",
   "lcdchar.closeImage": "Terminé",
-  "lcdchar.importHint": "Le seuil et les options redessinent toute l'image. Dessinez à la main après avoir cliqué sur Terminé."
+  "lcdchar.importHint": "Le seuil et les options redessinent toute l'image. Dessinez à la main après avoir cliqué sur Terminé.",
+  "lcdchar.auto": "Auto"
 }
