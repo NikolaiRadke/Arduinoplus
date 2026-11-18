@@ -36,8 +36,10 @@ Arduino IDE is not VS Code. A lot of functions are disabled but not documented. 
 * *Compiler Flag Manager:* System files get overwritten on board updates.
 * *Serial Monitor Search:* Extension API has no access to Serial Monitor.
 
-## Screenshot
-![Arduino+](https://www.nikolairadke.de/aiduino/arduinoplus_screenshot.png)
+## Screenshots
+![Arduino+ 1](https://www.nikolairadke.de/aiduino/arduinoplus_screenshot_1.png)
+![Arduino+ 2](https://www.nikolairadke.de/aiduino/arduinoplus_screenshot_2.png)
+![Arduino+ 3](https://www.nikolairadke.de/aiduino/arduinoplus_screenshot_3.png)
 
 ## Installation
 
