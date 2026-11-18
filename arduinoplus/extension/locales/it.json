@@ -126,5 +126,10 @@
   "snapshot.deleted": "Snapshot eliminato",
   "snapshot.failed": "Snapshot non riuscito: {0}",
   "snapshot.diffTitle": "{0} (snapshot {1}) ↔ attuale",
-  "snapshot.noFiles": "Nessun file dello sketch trovato"
+  "snapshot.noFiles": "Nessun file dello sketch trovato",
+  "color.title": "Selettore colore",
+  "color.apply": "Sostituisci",
+  "color.replaced": "Colore sostituito!",
+  "color.tft": "RGB565 (TFT)",
+  "color.hint": "Il campione a destra mostra il colore arrotondato a RGB565, come lo visualizza un TFT. I LED spesso appaiono diversi dallo schermo."
 }

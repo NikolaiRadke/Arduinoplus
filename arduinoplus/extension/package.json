@@ -35,7 +35,10 @@
     "u8g2",
     "snapshot",
     "backup",
-    "history"
+    "history",
+    "color",
+    "rgb565",
+    "neopixel"
   ],
   "activationEvents": [
     "*"
@@ -126,6 +129,12 @@
         "title": "%command.snapshots%",
         "category": "Arduino+",
         "icon": "$(history)"
+      },
+      {
+        "command": "arduinoplus.colorPicker",
+        "title": "%command.colorPicker%",
+        "category": "Arduino+",
+        "icon": "$(symbol-color)"
       }
     ],
     "keybindings": [
@@ -185,6 +194,10 @@
         {
           "command": "arduinoplus.convertNumber",
           "group": "1_edit@3"
+        },
+        {
+          "command": "arduinoplus.colorPicker",
+          "group": "1_edit@4"
         },
         {
           "command": "arduinoplus.copyToSnippets",

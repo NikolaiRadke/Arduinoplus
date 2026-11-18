@@ -12,5 +12,6 @@
   "command.showTodos": "Show TODOs",
   "command.convertNumber": "Convert Number...",
   "command.lcdCharEditor": "Pixel Editor (LCD, Matrix, Bitmap)...",
-  "command.snapshots": "Snapshots..."
+  "command.snapshots": "Snapshots...",
+  "command.colorPicker": "Color Picker..."
 }

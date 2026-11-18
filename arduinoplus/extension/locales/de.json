@@ -126,5 +126,10 @@
   "snapshot.deleted": "Snapshot gelöscht",
   "snapshot.failed": "Snapshot fehlgeschlagen: {0}",
   "snapshot.diffTitle": "{0} (Snapshot {1}) ↔ aktuell",
-  "snapshot.noFiles": "Keine Sketch-Dateien gefunden"
+  "snapshot.noFiles": "Keine Sketch-Dateien gefunden",
+  "color.title": "Farbwähler",
+  "color.apply": "Ersetzen",
+  "color.replaced": "Farbe ersetzt!",
+  "color.tft": "RGB565 (TFT)",
+  "color.hint": "Die rechte Fläche zeigt die Farbe nach der Rundung auf RGB565, so wie ein TFT sie darstellt. LEDs wirken oft anders als der Bildschirm."
 }

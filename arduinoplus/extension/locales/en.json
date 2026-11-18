@@ -126,5 +126,10 @@
   "snapshot.deleted": "Snapshot deleted",
   "snapshot.failed": "Snapshot failed: {0}",
   "snapshot.diffTitle": "{0} (snapshot {1}) ↔ current",
-  "snapshot.noFiles": "No sketch files found"
+  "snapshot.noFiles": "No sketch files found",
+  "color.title": "Color Picker",
+  "color.apply": "Replace",
+  "color.replaced": "Color replaced!",
+  "color.tft": "RGB565 (TFT)",
+  "color.hint": "The right swatch shows the color after rounding to RGB565, as a TFT displays it. LEDs often look different than the screen."
 }

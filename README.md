@@ -11,6 +11,7 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
 * **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The anchor list shows the anchors of all tabs, grouped by file. Anchors follow their line when you add or remove lines above.
 * **Comment Anchors**: Write `// @anchor WiFi Setup` into your code (or use *Insert Comment Anchor*). They live in the code, so they survive saving, renaming and sharing the sketch, and show up in the same anchor list.
 * **Number Converter**: Converts the number at the cursor between decimal, hex (`0xC8`) and binary (`0b11001000`), also padded to 8/16/32 bit, Arduino style (`B11001000`) and as character (`'A'`).
+* **Color Picker**: Place the cursor on a color like `0xFF8000`, `0xF800` (RGB565), `strip.Color(255, 0, 0)`, `CRGB(255, 0, 0)` or `tft.color565(255, 0, 0)`, pick a new one with sliders (RGB, HSV) and replace it, or convert it to another format. A second swatch shows how the color looks on a TFT after rounding to RGB565.
 * **Pixel Editor**: Paint pixel graphics and insert them as byte array (`B10001`, `0b10001` or `0x11`):
   * 5×8 custom characters for HD44780 LCDs (`lcd.createChar`)
   * 8×8 images for LED matrices with MAX7219 (`lc.setRow`)

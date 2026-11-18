@@ -126,5 +126,10 @@
   "snapshot.deleted": "Instantánea eliminada",
   "snapshot.failed": "Error en la instantánea: {0}",
   "snapshot.diffTitle": "{0} (instantánea {1}) ↔ actual",
-  "snapshot.noFiles": "No se encontraron archivos del sketch"
+  "snapshot.noFiles": "No se encontraron archivos del sketch",
+  "color.title": "Selector de color",
+  "color.apply": "Reemplazar",
+  "color.replaced": "¡Color reemplazado!",
+  "color.tft": "RGB565 (TFT)",
+  "color.hint": "La muestra derecha enseña el color redondeado a RGB565, como lo muestra una TFT. Los LED suelen verse distintos a la pantalla."
 }

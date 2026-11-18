@@ -18,6 +18,7 @@ const { showTodoList } = require('./features/todoList');
 const { convertNumber } = require('./features/numberConverter');
 const { PixelEditor } = require('./features/pixelEditor');
 const { SnapshotManager } = require('./features/snapshotManager');
+const { ColorPicker } = require('./features/colorPicker');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
@@ -26,6 +27,7 @@ let anchorManager;
 let aboutPanel;
 let pixelEditor;
 let snapshotManager;
+let colorPicker;
 
 /**
  * Extension activation
@@ -49,6 +51,9 @@ function activate(context) {
 
     // Sketch snapshots (history)
     snapshotManager = new SnapshotManager(t);
+
+    // Color picker for LEDs and displays
+    colorPicker = new ColorPicker(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -98,6 +103,10 @@ function activate(context) {
         {
             name: 'arduinoplus.lcdCharEditor',
             handler: () => pixelEditor.show()
+        },
+        {
+            name: 'arduinoplus.colorPicker',
+            handler: () => colorPicker.show()
         },
         {
             name: 'arduinoplus.snapshots',
