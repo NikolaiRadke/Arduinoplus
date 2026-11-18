@@ -4,6 +4,7 @@
 
 ### Features
 - Added About page with version, changelog and uninstall button
+- Added an icon
 - Added translations: German, Spanish, French and Italian (English stays the default)
 - README and changelog are now part of the VSIX and are shown in the Extension Manager
 

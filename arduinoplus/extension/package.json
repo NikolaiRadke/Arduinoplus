@@ -4,6 +4,7 @@
   "description": "Essential IDE helpers for Arduino development",
   "version": "1.1.0",
   "publisher": "MonsterMaker",
+  "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.60.0"
   },

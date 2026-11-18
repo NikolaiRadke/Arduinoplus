@@ -6,6 +6,7 @@
     <Description xml:space="preserve">Essential IDE helpers for Arduino development</Description>
     <Tags>arduino,arduinoIDE,comment,toggle,editor,tools,snippets,anchors,bookmarks,navigation</Tags>
     <Categories>Other,Programming Languages</Categories>
+    <Icon>extension/resources/icon.png</Icon>
     <GalleryFlags>Public</GalleryFlags>
     <Properties>
       <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.60.0"/>
@@ -27,5 +28,6 @@
     <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/>
     <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true"/>
     <Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true"/>
+    <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/resources/icon.png" Addressable="true"/>
   </Assets>
 </PackageManifest>
