@@ -9,6 +9,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const vscode = require('vscode');
+const { getSketchFiles, readLines } = require('./todoList');
 
 const ARDUINOPLUS_DIR = path.join(os.homedir(), '.arduinoplus');
 const ANCHORS_FILE = path.join(ARDUINOPLUS_DIR, 'anchors.json');
@@ -355,24 +356,63 @@ class AnchorManager {
     }
 
     /**
-     * Show anchor list in QuickPick
+     * Anchors of all files in the sketch, the current file first
+     * @returns {Array<{file: string, uri: string, anchors: Array}>}
+     */
+    getSketchAnchors() {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return [];
+        const current = editor.document.uri.fsPath;
+        const sketchFolder = path.dirname(current);
+        const files = getSketchFiles(sketchFolder);
+        if (!files.includes(current)) files.unshift(current);
+        files.sort((a, b) => (a === current ? -1 : b === current ? 1 : 0));
+
+        return files.map(file => {
+            // Open documents have unsaved changes, the others are read from disk
+            const open = file === current
+                ? editor.document
+                : vscode.workspace.textDocuments.find(doc => doc.uri.fsPath === file);
+            const uri = open ? open.uri.toString() : vscode.Uri.file(file).toString();
+            const lines = open ? null : readLines(file);
+            const document = open || {
+                uri: { toString: () => uri },
+                lineCount: lines.length,
+                lineAt: i => ({ text: lines[i] })
+            };
+            return { file, label: path.relative(sketchFolder, file), uri, anchors: this.getAnchorsForDocument(document, true) };
+        }).filter(group => group.anchors.length > 0);
+    }
+
+    /**
+     * QuickPick items grouped by file
+     */
+    buildGroupedItems(groups, icon) {
+        const items = [];
+        for (const group of groups) {
+            items.push({ label: group.label, kind: vscode.QuickPickItemKind.Separator });
+            for (const anchor of group.anchors) {
+                items.push({ ...this.toQuickPickItem(anchor, icon), fileUri: group.uri });
+            }
+        }
+        return items;
+    }
+
+    /**
+     * Show the anchors of the whole sketch in a QuickPick
      */
     async showAnchorList() {
-        const anchors = this.getAnchorsForCurrentFile(true);
+        const groups = this.getSketchAnchors();
         this.updateStatusBar();
         
-        if (anchors.length === 0) {
+        if (groups.length === 0) {
             vscode.window.showInformationMessage(this.t('anchor.noneInFile'));
             return;
         }
 
-        const editor = vscode.window.activeTextEditor;
-        const fileUri = editor.document.uri.toString();
-        const fileName = path.basename(editor.document.fileName);
-
-        // Add separator and delete option
+        const sketchName = path.basename(path.dirname(vscode.window.activeTextEditor.document.uri.fsPath));
         const items = [
-            ...anchors.map(anchor => this.toQuickPickItem(anchor)),
+            ...this.buildGroupedItems(groups),
             { label: '', kind: vscode.QuickPickItemKind.Separator },
             {
                 label: '🗑️ ' + this.t('anchor.deleteOption'),
@@ -383,7 +423,7 @@ class AnchorManager {
         ];
 
         const selected = await vscode.window.showQuickPick(items, {
-            placeHolder: this.t('anchor.jumpPlaceholder', fileName),
+            placeHolder: this.t('anchor.jumpPlaceholder', sketchName),
             matchOnDescription: true,
             matchOnDetail: true
         });
@@ -393,31 +433,33 @@ class AnchorManager {
         if (selected.isDeleteOption) {
             await this.showDeleteAnchorList();
         } else {
-            await this.jumpToAnchor(fileUri, selected.anchor.line);
+            await this.jumpToAnchor(selected.fileUri, selected.anchor.line);
         }
     }
 
     /**
-     * Show delete anchor picker
+     * Show delete anchor picker for the whole sketch
      */
     async showDeleteAnchorList() {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
-        const anchors = this.getAnchorsForCurrentFile(true);
-        const fileUri = editor.document.uri.toString();
-        const fileName = path.basename(editor.document.fileName);
+        const groups = this.getSketchAnchors();
+        const sketchName = path.basename(path.dirname(editor.document.uri.fsPath));
 
         const selected = await vscode.window.showQuickPick(
-            anchors.map(anchor => this.toQuickPickItem(anchor, '🗑️')),
-            { placeHolder: this.t('anchor.deletePlaceholder', fileName) }
+            this.buildGroupedItems(groups, '🗑️'),
+            { placeHolder: this.t('anchor.deletePlaceholder', sketchName) }
         );
 
         if (!selected) return;
 
         if (selected.anchor.isComment) {
-            await this.deleteCommentAnchor(editor, selected.anchor.line);
+            // Comment anchors live in the code: open the file and edit it
+            const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(selected.fileUri));
+            const target = await vscode.window.showTextDocument(document);
+            await this.deleteCommentAnchor(target, selected.anchor.line);
         } else {
-            this.deleteAnchor(fileUri, selected.anchor.index);
+            this.deleteAnchor(selected.fileUri, selected.anchor.index);
         }
         vscode.window.showInformationMessage(this.t('anchor.deleted', selected.anchor.name));
     }

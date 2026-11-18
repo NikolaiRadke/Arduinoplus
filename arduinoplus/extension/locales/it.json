@@ -7,7 +7,7 @@
   "anchor.namePlaceholder": "ad es. Loop principale, Configurazione WiFi",
   "anchor.added": "Ancora \"{0}\" aggiunta alla riga {1}",
   "anchor.jumpFailed": "Impossibile saltare all'ancora: {0}",
-  "anchor.noneInFile": "Nessuna ancora in questo file. Usa \"Imposta ancora\" o scrivi // @anchor Nome nel tuo codice.",
+  "anchor.noneInFile": "Nessuna ancora in questo sketch. Usa \"Imposta ancora\" o scrivi // @anchor Nome nel tuo codice.",
   "anchor.line": "Riga {0}",
   "anchor.deleteOption": "Elimina un'ancora...",
   "anchor.deleteOptionDetail": "Rimuovi un'ancora da questo file",

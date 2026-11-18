@@ -47,6 +47,20 @@ function collectSketchFiles(folder, depth = 0) {
 }
 
 /**
+ * Source files of the sketch, main .ino first, then alphabetical like the IDE tabs
+ * @param {string} sketchFolder
+ * @returns {string[]}
+ */
+function getSketchFiles(sketchFolder) {
+    const sketchName = path.basename(sketchFolder);
+    return collectSketchFiles(sketchFolder).sort((a, b) => {
+        const mainA = path.basename(a, '.ino') === sketchName ? 0 : 1;
+        const mainB = path.basename(b, '.ino') === sketchName ? 0 : 1;
+        return mainA - mainB || a.localeCompare(b);
+    });
+}
+
+/**
  * Text of a file, taken from an open editor if possible (unsaved changes)
  * @param {string} file
  * @returns {string[]} Lines
@@ -108,13 +122,7 @@ async function showTodoList(t) {
 
     const sketchFolder = path.dirname(editor.document.uri.fsPath);
     const sketchName = path.basename(sketchFolder);
-    const files = collectSketchFiles(sketchFolder)
-        // Main .ino first, then alphabetical like the IDE tabs
-        .sort((a, b) => {
-            const mainA = path.basename(a, '.ino') === sketchName ? 0 : 1;
-            const mainB = path.basename(b, '.ino') === sketchName ? 0 : 1;
-            return mainA - mainB || a.localeCompare(b);
-        });
+    const files = getSketchFiles(sketchFolder);
 
     const items = [];
     for (const file of files) {
@@ -157,5 +165,7 @@ async function showTodoList(t) {
 module.exports = {
     showTodoList,
     findTodos,
-    collectSketchFiles
+    collectSketchFiles,
+    getSketchFiles,
+    readLines
 };

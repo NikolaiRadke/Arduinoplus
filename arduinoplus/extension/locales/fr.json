@@ -7,7 +7,7 @@
   "anchor.namePlaceholder": "p. ex. Boucle principale, Configuration WiFi",
   "anchor.added": "Ancre \"{0}\" ajoutée à la ligne {1}",
   "anchor.jumpFailed": "Impossible d'aller à l'ancre : {0}",
-  "anchor.noneInFile": "Aucune ancre dans ce fichier. Utilisez \"Placer une ancre\" ou écrivez // @anchor Nom dans votre code.",
+  "anchor.noneInFile": "Aucune ancre dans ce sketch. Utilisez \"Placer une ancre\" ou écrivez // @anchor Nom dans votre code.",
   "anchor.line": "Ligne {0}",
   "anchor.deleteOption": "Supprimer une ancre...",
   "anchor.deleteOptionDetail": "Retirer une ancre de ce fichier",

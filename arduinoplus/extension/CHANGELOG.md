@@ -19,6 +19,7 @@
 
 ### Changes
 - Anchors follow their line when lines are added or removed above
+- The anchor list shows the anchors of all tabs in the sketch
 - Uninstalling asks twice and lists all files that will be deleted, because your snippets and anchors are deleted as well
 
 ### Bugfixes

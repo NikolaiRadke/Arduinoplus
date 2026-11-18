@@ -7,7 +7,7 @@
   "anchor.namePlaceholder": "e.g., Main Loop, WiFi Setup",
   "anchor.added": "Anchor \"{0}\" added at line {1}",
   "anchor.jumpFailed": "Failed to jump to anchor: {0}",
-  "anchor.noneInFile": "No anchors in current file. Use \"Set Anchor\" or write // @anchor Name into your code.",
+  "anchor.noneInFile": "No anchors in this sketch. Use \"Set Anchor\" or write // @anchor Name into your code.",
   "anchor.line": "Line {0}",
   "anchor.deleteOption": "Delete an anchor...",
   "anchor.deleteOptionDetail": "Remove an anchor from this file",

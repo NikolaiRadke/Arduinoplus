@@ -7,7 +7,7 @@
   "anchor.namePlaceholder": "p. ej., Bucle principal, Configuración WiFi",
   "anchor.added": "Anclaje \"{0}\" añadido en la línea {1}",
   "anchor.jumpFailed": "No se pudo saltar al anclaje: {0}",
-  "anchor.noneInFile": "No hay anclajes en este archivo. Usa \"Fijar anclaje\" o escribe // @anchor Nombre en tu código.",
+  "anchor.noneInFile": "No hay anclajes en este sketch. Usa \"Fijar anclaje\" o escribe // @anchor Nombre en tu código.",
   "anchor.line": "Línea {0}",
   "anchor.deleteOption": "Eliminar un anclaje...",
   "anchor.deleteOptionDetail": "Quitar un anclaje de este archivo",

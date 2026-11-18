@@ -7,7 +7,7 @@
   "anchor.namePlaceholder": "z. B. Hauptschleife, WLAN-Setup",
   "anchor.added": "Anker \"{0}\" in Zeile {1} gesetzt",
   "anchor.jumpFailed": "Sprung zum Anker fehlgeschlagen: {0}",
-  "anchor.noneInFile": "Keine Anker in dieser Datei. Nutze \"Anker setzen\" oder schreibe // @anchor Name in deinen Code.",
+  "anchor.noneInFile": "Keine Anker in diesem Sketch. Nutze \"Anker setzen\" oder schreibe // @anchor Name in deinen Code.",
   "anchor.line": "Zeile {0}",
   "anchor.deleteOption": "Anker löschen...",
   "anchor.deleteOptionDetail": "Einen Anker aus dieser Datei entfernen",

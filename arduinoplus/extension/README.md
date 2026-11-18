@@ -8,7 +8,7 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
 * **Toggle Line Comments**: Quickly comment/uncomment lines with `//` - perfect for debugging!
 * **Duplicate Line**: Duplicates the selected line and inserts it below.
 * **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets. Rename them, insert them with `Ctrl+Shift+V` from a list, and share them with import/export.
-* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. Anchors follow their line when you add or remove lines above.
+* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The anchor list shows the anchors of all tabs, grouped by file. Anchors follow their line when you add or remove lines above.
 * **Comment Anchors**: Write `// @anchor WiFi Setup` into your code (or use *Insert Comment Anchor*). They live in the code, so they survive saving, renaming and sharing the sketch, and show up in the same anchor list.
 * **Number Converter**: Converts the number at the cursor between decimal, hex (`0xC8`) and binary (`0b11001000`), also padded to 8/16/32 bit, Arduino style (`B11001000`) and as character (`'A'`).
 * **Pixel Editor**: Paint pixel graphics and insert them as byte array (`B10001`, `0b10001` or `0x11`):
@@ -73,7 +73,7 @@ You can access all features through the right click context menu → *Arduino+*.
 
 On macOS use `Cmd` instead of `Ctrl`.
 
-The number of anchors in the current file is shown in the status bar. Click on it to jump to an anchor.
+The number of anchors in the current file is shown in the status bar. Click on it to see the anchors of the whole sketch.
 
 ### Anchors
 
