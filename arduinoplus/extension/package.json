@@ -32,7 +32,10 @@
     "createChar",
     "bitmap",
     "oled",
-    "u8g2"
+    "u8g2",
+    "snapshot",
+    "backup",
+    "history"
   ],
   "activationEvents": [
     "*"
@@ -117,6 +120,12 @@
         "title": "%command.lcdCharEditor%",
         "category": "Arduino+",
         "icon": "$(symbol-color)"
+      },
+      {
+        "command": "arduinoplus.snapshots",
+        "title": "%command.snapshots%",
+        "category": "Arduino+",
+        "icon": "$(history)"
       }
     ],
     "keybindings": [
@@ -214,6 +223,10 @@
         {
           "command": "arduinoplus.lcdCharEditor",
           "group": "4_tools@2"
+        },
+        {
+          "command": "arduinoplus.snapshots",
+          "group": "5_sketch@1"
         },
         {
           "command": "arduinoplus.about",

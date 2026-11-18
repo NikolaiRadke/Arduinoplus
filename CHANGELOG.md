@@ -5,6 +5,7 @@
 ### Features
 - Added comment anchors: `// @anchor Name` in the code, shown in the anchor list
 - Added TODO list for TODO and FIXME comments of the whole sketch
+- Added sketch snapshots: save, compare and restore the state of a sketch
 - Added number converter: decimal, hex, binary, Arduino binary and character
 - Added pixel editor: 5x8 LCD characters, 8x8 LED matrix images and bitmaps up to 128x128 (Adafruit GFX, U8g2)
 - Pixel editor can import images with automatic threshold, dithering and invert

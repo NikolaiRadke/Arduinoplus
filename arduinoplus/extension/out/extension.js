@@ -17,6 +17,7 @@ const AboutPanel = require('./features/aboutPanel');
 const { showTodoList } = require('./features/todoList');
 const { convertNumber } = require('./features/numberConverter');
 const { PixelEditor } = require('./features/pixelEditor');
+const { SnapshotManager } = require('./features/snapshotManager');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
@@ -24,6 +25,7 @@ let snippetManager;
 let anchorManager;
 let aboutPanel;
 let pixelEditor;
+let snapshotManager;
 
 /**
  * Extension activation
@@ -44,6 +46,9 @@ function activate(context) {
 
     // Pixel editor for LCD characters, LED matrices and bitmaps
     pixelEditor = new PixelEditor(t);
+
+    // Sketch snapshots (history)
+    snapshotManager = new SnapshotManager(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -93,6 +98,10 @@ function activate(context) {
         {
             name: 'arduinoplus.lcdCharEditor',
             handler: () => pixelEditor.show()
+        },
+        {
+            name: 'arduinoplus.snapshots',
+            handler: () => snapshotManager.showMenu()
         },
         {
             name: 'arduinoplus.showTodos',
