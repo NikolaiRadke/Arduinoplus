@@ -19,6 +19,7 @@ const { convertNumber } = require('./features/numberConverter');
 const { PixelEditor } = require('./features/pixelEditor');
 const { SnapshotManager } = require('./features/snapshotManager');
 const { ColorPicker } = require('./features/colorPicker');
+const { MelodyEditor } = require('./features/melodyEditor');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
@@ -28,6 +29,7 @@ let aboutPanel;
 let pixelEditor;
 let snapshotManager;
 let colorPicker;
+let melodyEditor;
 
 /**
  * Extension activation
@@ -54,6 +56,9 @@ function activate(context) {
 
     // Color picker for LEDs and displays
     colorPicker = new ColorPicker(t);
+
+    // Melody editor for tone()
+    melodyEditor = new MelodyEditor(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -107,6 +112,10 @@ function activate(context) {
         {
             name: 'arduinoplus.colorPicker',
             handler: () => colorPicker.show()
+        },
+        {
+            name: 'arduinoplus.melodyEditor',
+            handler: () => melodyEditor.show()
         },
         {
             name: 'arduinoplus.snapshots',

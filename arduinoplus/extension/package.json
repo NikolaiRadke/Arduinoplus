@@ -38,7 +38,10 @@
     "history",
     "color",
     "rgb565",
-    "neopixel"
+    "neopixel",
+    "melody",
+    "tone",
+    "rtttl"
   ],
   "activationEvents": [
     "*"
@@ -135,6 +138,12 @@
         "title": "%command.colorPicker%",
         "category": "Arduino+",
         "icon": "$(symbol-color)"
+      },
+      {
+        "command": "arduinoplus.melodyEditor",
+        "title": "%command.melodyEditor%",
+        "category": "Arduino+",
+        "icon": "$(music)"
       }
     ],
     "keybindings": [
@@ -236,6 +245,10 @@
         {
           "command": "arduinoplus.lcdCharEditor",
           "group": "4_tools@2"
+        },
+        {
+          "command": "arduinoplus.melodyEditor",
+          "group": "4_tools@3"
         },
         {
           "command": "arduinoplus.snapshots",

@@ -13,5 +13,6 @@
   "command.convertNumber": "Convert Number...",
   "command.lcdCharEditor": "Pixel Editor (LCD, Matrix, Bitmap)...",
   "command.snapshots": "Snapshots...",
-  "command.colorPicker": "Color Picker..."
+  "command.colorPicker": "Color Picker...",
+  "command.melodyEditor": "Melody Editor..."
 }
