@@ -11,5 +11,5 @@
   "command.insertCommentAnchor": "Insert Comment Anchor",
   "command.showTodos": "Show TODOs",
   "command.convertNumber": "Convert Number...",
-  "command.lcdCharEditor": "LCD Character Editor..."
+  "command.lcdCharEditor": "Character Editor (LCD, Matrix, OLED)..."
 }

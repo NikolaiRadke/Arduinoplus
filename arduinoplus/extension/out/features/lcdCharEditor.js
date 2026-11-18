@@ -4,8 +4,9 @@
  *
  * Licensed under the Apache License, Version 2.0
  *
- * Paints a 5x8 character for HD44780 displays (LiquidCrystal, createChar)
- * and inserts it as byte array.
+ * Paints custom characters and icons and inserts them as byte array:
+ * 5x8 for HD44780 LCDs (createChar), 8x8 for LED matrices (MAX7219),
+ * 16x16 for OLEDs (Adafruit GFX drawBitmap).
  */
 
 "use strict";
@@ -13,34 +14,50 @@
 const vscode = require('vscode');
 const { parseNumber } = require('./numberConverter');
 
-const ROWS = 8;
-const COLS = 5;
+// Grid sizes: HD44780 custom character, MAX7219 LED matrix, OLED icon (Adafruit GFX)
+const SIZES = {
+    lcd: { cols: 5, rows: 8 },
+    matrix: { cols: 8, rows: 8 },
+    oled: { cols: 16, rows: 16 }
+};
 
 /**
- * Read an existing character array from the selection
+ * Read an existing character or bitmap array from the selection
  * @param {string} text - e.g. "byte smiley[8] = { B00000, B01010, ... };"
- * @returns {{name: string, rows: number[], format: string}|null}
+ * @returns {{name: string, rows: number[], format: string, size: string}|null}
  */
 function parseCharArray(text) {
-    const body = text.includes('{') ? text.substring(text.indexOf('{') + 1, text.lastIndexOf('}') > 0 ? text.lastIndexOf('}') : undefined) : text;
-    const tokens = body.split(/[\s,]+/).map(token => token.trim()).filter(Boolean);
-    const rows = [];
+    const open = text.indexOf('{');
+    const close = text.lastIndexOf('}');
+    const body = open !== -1 ? text.substring(open + 1, close > open ? close : undefined) : text;
+    const values = [];
     let format = null;
-    for (const token of tokens) {
+    for (const token of body.split(/[\s,]+/).filter(Boolean)) {
         const parsed = parseNumber(token);
         if (!parsed) continue;
-        rows.push(Number(parsed.value & 0x1Fn));
+        values.push(Number(parsed.value & 0xFFn));
         format = format || parsed.format;
-        if (rows.length === ROWS) break;
+        if (values.length === 32) break;
     }
-    if (rows.length === 0) return null;
-    while (rows.length < ROWS) rows.push(0);
+    if (values.length === 0) return null;
+
+    let size = 'lcd';
+    if (values.length > 8 || /PROGMEM/.test(text)) size = 'oled';
+    else if (values.some(v => v > 31)) size = 'matrix';
+
+    const rows = [];
+    for (let r = 0; r < SIZES[size].rows; r++) {
+        rows.push(size === 'oled'
+            ? ((values[r * 2] || 0) << 8) | (values[r * 2 + 1] || 0)
+            : (values[r] || 0) & ((1 << SIZES[size].cols) - 1));
+    }
 
     const nameMatch = text.match(/([A-Za-z_]\w*)\s*\[\s*\d*\s*\]/);
     return {
         name: nameMatch ? nameMatch[1] : 'customChar',
         rows,
-        format: format === 'hex' ? 'hex' : format === 'bin' ? 'bin' : 'arduino'
+        format: format === 'hex' ? 'hex' : format === 'bin' ? 'bin' : 'arduino',
+        size
     };
 }
 
@@ -61,7 +78,7 @@ class LcdCharEditor {
         const editor = vscode.window.activeTextEditor;
         this.targetEditor = editor || this.targetEditor;
 
-        let initial = { name: 'customChar', rows: new Array(ROWS).fill(0), format: 'arduino' };
+        let initial = { name: 'customChar', rows: new Array(SIZES.lcd.rows).fill(0), format: 'arduino', size: 'lcd' };
         if (editor && !editor.selection.isEmpty) {
             initial = parseCharArray(editor.document.getText(editor.selection)) || initial;
         }
@@ -115,7 +132,7 @@ class LcdCharEditor {
             if (editor.selection.isEmpty) {
                 editBuilder.insert(editor.selection.active, code);
             } else {
-                // Replaces the character array that was selected
+                // Replaces the array that was selected
                 editBuilder.replace(editor.selection, code.replace(/\n$/, ''));
             }
         });
@@ -142,15 +159,23 @@ class LcdCharEditor {
 <style>
     body { color: var(--vscode-foreground); background: var(--vscode-editor-background); font-family: var(--vscode-font-family); font-size: var(--vscode-font-size); padding: 16px; user-select: none; }
     .layout { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
-    .grid { display: grid; grid-template-columns: repeat(${COLS}, 32px); grid-template-rows: repeat(${ROWS}, 32px); gap: 3px; padding: 10px; border-radius: 4px; background: #1b3d1b; width: max-content; cursor: crosshair; }
-    .pixel { border-radius: 2px; background: #2f5f2f; }
-    .pixel.on { background: #c8f7c8; box-shadow: 0 0 4px #c8f7c8; }
+    .grid { display: grid; gap: 3px; padding: 10px; border-radius: 4px; width: max-content; cursor: crosshair; }
+    .pixel { border-radius: 2px; }
+    .grid.lcd { background: #1b3d1b; }
+    .grid.lcd .pixel { background: #2f5f2f; }
+    .grid.lcd .pixel.on { background: #c8f7c8; box-shadow: 0 0 4px #c8f7c8; }
+    .grid.matrix { background: #111; }
+    .grid.matrix .pixel { border-radius: 50%; background: #3a1010; }
+    .grid.matrix .pixel.on { background: #ff3b30; box-shadow: 0 0 6px #ff3b30; }
+    .grid.oled { background: #000; gap: 2px; }
+    .grid.oled .pixel { border-radius: 1px; background: #101820; }
+    .grid.oled .pixel.on { background: #7fd4ff; box-shadow: 0 0 3px #7fd4ff; }
     .tools { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-    .controls label { display: block; margin: 10px 0 4px 0; color: var(--vscode-descriptionForeground); }
-    .controls label:first-child { margin-top: 0; }
+    .controls label.title { display: block; margin: 12px 0 4px 0; color: var(--vscode-descriptionForeground); }
+    .controls label.title:first-child { margin-top: 0; }
+    .options label { margin-right: 12px; white-space: nowrap; }
     input[type=text] { width: 180px; padding: 4px 6px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border, transparent); font-family: var(--vscode-editor-font-family); }
-    .formats label { display: inline; margin-right: 12px; color: var(--vscode-foreground); }
-    pre { margin: 10px 0; padding: 10px 12px; border-radius: 3px; background: var(--vscode-textCodeBlock-background); font-family: var(--vscode-editor-font-family); font-size: var(--vscode-editor-font-size); user-select: text; }
+    pre { margin: 10px 0; padding: 10px 12px; max-height: 340px; overflow: auto; border-radius: 3px; background: var(--vscode-textCodeBlock-background); font-family: var(--vscode-editor-font-family); font-size: var(--vscode-editor-font-size); user-select: text; }
     button { padding: 5px 12px; border: none; border-radius: 2px; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--vscode-button-foreground); background: var(--vscode-button-background); }
     button:hover { background: var(--vscode-button-hoverBackground); }
     button.secondary { color: var(--vscode-button-secondaryForeground); background: var(--vscode-button-secondaryBackground); }
@@ -175,10 +200,16 @@ class LcdCharEditor {
         <div class="hint">${esc(t('lcdchar.hint'))}</div>
     </div>
     <div class="controls">
-        <label for="name">${esc(t('lcdchar.name'))}</label>
+        <label class="title">${esc(t('lcdchar.size'))}</label>
+        <div class="options">
+            <label><input type="radio" name="size" value="lcd"> ${esc(t('lcdchar.sizeLcd'))}</label>
+            <label><input type="radio" name="size" value="matrix"> ${esc(t('lcdchar.sizeMatrix'))}</label>
+            <label><input type="radio" name="size" value="oled"> ${esc(t('lcdchar.sizeOled'))}</label>
+        </div>
+        <label class="title" for="name">${esc(t('lcdchar.name'))}</label>
         <input type="text" id="name" spellcheck="false">
-        <label>${esc(t('lcdchar.format'))}</label>
-        <div class="formats">
+        <label class="title">${esc(t('lcdchar.format'))}</label>
+        <div class="options">
             <label><input type="radio" name="format" value="arduino"> B10001</label>
             <label><input type="radio" name="format" value="bin"> 0b10001</label>
             <label><input type="radio" name="format" value="hex"> 0x11</label>
@@ -188,12 +219,15 @@ class LcdCharEditor {
             <button id="insert">${esc(t('lcdchar.insert'))}</button>
             <button class="secondary" id="copy">${esc(t('snippet.copy'))}</button>
         </div>
-        <div class="hint">${esc(t('lcdchar.usage'))}</div>
+        <div class="hint" id="usage"></div>
     </div>
 </div>
 <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
-    const ROWS = ${ROWS}, COLS = ${COLS}, MASK = (1 << COLS) - 1;
+    const SIZES = ${JSON.stringify(SIZES)};
+    const PIXEL = { lcd: 32, matrix: 30, oled: 18 };
+    const USAGE = ${JSON.stringify({ lcd: t('lcdchar.usage'), matrix: t('lcdchar.usageMatrix'), oled: t('lcdchar.usageOled') })};
+    let size = 'lcd';
     let rows = [];
     let paintValue = null;
 
@@ -201,17 +235,27 @@ class LcdCharEditor {
     const nameInput = document.getElementById('name');
     const codeBox = document.getElementById('code');
 
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            const pixel = document.createElement('div');
-            pixel.className = 'pixel';
-            pixel.dataset.row = r;
-            pixel.dataset.col = c;
-            grid.appendChild(pixel);
-        }
-    }
+    function cols() { return SIZES[size].cols; }
+    function mask() { return (1 << cols()) - 1; }
+    function bit(c) { return 1 << (cols() - 1 - c); }
 
-    function bit(c) { return 1 << (COLS - 1 - c); }
+    function buildGrid() {
+        const { cols: c, rows: r } = SIZES[size];
+        grid.className = 'grid ' + size;
+        grid.style.gridTemplateColumns = 'repeat(' + c + ', ' + PIXEL[size] + 'px)';
+        grid.style.gridTemplateRows = 'repeat(' + r + ', ' + PIXEL[size] + 'px)';
+        grid.innerHTML = '';
+        for (let y = 0; y < r; y++) {
+            for (let x = 0; x < c; x++) {
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel';
+                pixel.dataset.row = y;
+                pixel.dataset.col = x;
+                grid.appendChild(pixel);
+            }
+        }
+        document.getElementById('usage').textContent = USAGE[size];
+    }
 
     function setPixel(pixel, on) {
         const r = +pixel.dataset.row, c = +pixel.dataset.col;
@@ -219,16 +263,22 @@ class LcdCharEditor {
         render();
     }
 
-    function format(value) {
+    function formatByte(value, bits) {
         const f = document.querySelector('input[name=format]:checked').value;
         if (f === 'hex') return '0x' + value.toString(16).toUpperCase().padStart(2, '0');
-        const bin = value.toString(2).padStart(COLS, '0');
+        const bin = value.toString(2).padStart(bits, '0');
         return f === 'bin' ? '0b' + bin : 'B' + bin;
     }
 
     function code() {
         const name = (nameInput.value.trim().replace(/[^A-Za-z0-9_]/g, '_') || 'customChar').replace(/^(\\d)/, '_$1');
-        return 'byte ' + name + '[8] = {\\n' + rows.map((v, i) => '  ' + format(v) + (i < ROWS - 1 ? ',' : '')).join('\\n') + '\\n};\\n';
+        if (size === 'oled') {
+            // Adafruit GFX drawBitmap: rows of 2 bytes, MSB is the left pixel
+            const lines = rows.map(v => '  ' + formatByte(v >> 8, 8) + ', ' + formatByte(v & 0xFF, 8));
+            return 'const uint8_t ' + name + '[] PROGMEM = {\\n' + lines.join(',\\n') + '\\n};\\n';
+        }
+        const lines = rows.map(v => '  ' + formatByte(v, cols()));
+        return 'byte ' + name + '[8] = {\\n' + lines.join(',\\n') + '\\n};\\n';
     }
 
     function render() {
@@ -238,11 +288,29 @@ class LcdCharEditor {
         codeBox.textContent = code();
     }
 
+    // New size: keep the drawing, aligned top left
+    function setSize(newSize) {
+        const oldCols = cols();
+        const { cols: c, rows: r } = SIZES[newSize];
+        const shift = c - oldCols;
+        rows = Array.from({ length: r }, (_, y) => {
+            const v = rows[y] || 0;
+            return (shift >= 0 ? v << shift : v >> -shift) & ((1 << c) - 1);
+        });
+        size = newSize;
+        document.querySelector('input[name=size][value=' + size + ']').checked = true;
+        buildGrid();
+        render();
+    }
+
     function load(data) {
-        rows = data.rows.slice(0, ROWS).map(v => v & MASK);
-        while (rows.length < ROWS) rows.push(0);
+        size = SIZES[data.size] ? data.size : 'lcd';
+        rows = data.rows.slice(0, SIZES[size].rows).map(v => v & mask());
+        while (rows.length < SIZES[size].rows) rows.push(0);
         nameInput.value = data.name;
+        document.querySelector('input[name=size][value=' + size + ']').checked = true;
         document.querySelector('input[name=format][value=' + data.format + ']').checked = true;
+        buildGrid();
         render();
     }
 
@@ -259,15 +327,16 @@ class LcdCharEditor {
     window.addEventListener('mouseup', () => { paintValue = null; });
 
     document.querySelectorAll('[data-shift]').forEach(button => button.addEventListener('click', () => {
-        const dir = button.dataset.shift;
+        const dir = button.dataset.shift, n = rows.length, c = cols(), m = mask();
         if (dir === 'up') rows = rows.slice(1).concat(rows[0]);
-        if (dir === 'down') rows = [rows[ROWS - 1]].concat(rows.slice(0, ROWS - 1));
-        if (dir === 'left') rows = rows.map(v => ((v << 1) | (v >> (COLS - 1))) & MASK);
-        if (dir === 'right') rows = rows.map(v => ((v >> 1) | ((v & 1) << (COLS - 1))) & MASK);
+        if (dir === 'down') rows = [rows[n - 1]].concat(rows.slice(0, n - 1));
+        if (dir === 'left') rows = rows.map(v => ((v << 1) | (v >> (c - 1))) & m);
+        if (dir === 'right') rows = rows.map(v => ((v >> 1) | ((v & 1) << (c - 1))) & m);
         render();
     }));
-    document.getElementById('invert').addEventListener('click', () => { rows = rows.map(v => ~v & MASK); render(); });
+    document.getElementById('invert').addEventListener('click', () => { rows = rows.map(v => ~v & mask()); render(); });
     document.getElementById('clear').addEventListener('click', () => { rows = rows.map(() => 0); render(); });
+    document.querySelectorAll('input[name=size]').forEach(radio => radio.addEventListener('change', () => setSize(radio.value)));
     document.querySelectorAll('input[name=format]').forEach(radio => radio.addEventListener('change', render));
     nameInput.addEventListener('input', render);
     document.getElementById('insert').addEventListener('click', () => vscode.postMessage({ command: 'insert', code: code() }));
@@ -286,5 +355,6 @@ class LcdCharEditor {
 
 module.exports = {
     LcdCharEditor,
-    parseCharArray
+    parseCharArray,
+    SIZES
 };

@@ -67,7 +67,7 @@
   "convert.arduino": "Binario (Arduino)",
   "convert.char": "Carattere",
   "convert.bits": "{0} bit",
-  "lcdchar.title": "Carattere LCD",
+  "lcdchar.title": "Editor caratteri",
   "lcdchar.name": "Nome",
   "lcdchar.format": "Formato",
   "lcdchar.insert": "Inserisci",
@@ -76,6 +76,12 @@
   "lcdchar.shift": "Sposta",
   "lcdchar.hint": "Clicca o trascina per disegnare i pixel.",
   "lcdchar.usage": "Da usare con lcd.createChar(0, nome) e lcd.write(byte(0)).",
-  "lcdchar.copied": "Carattere copiato negli appunti!",
-  "lcdchar.inserted": "Carattere inserito!"
+  "lcdchar.copied": "Copiato negli appunti!",
+  "lcdchar.inserted": "Inserito!",
+  "lcdchar.size": "Dimensione",
+  "lcdchar.sizeLcd": "5×8 LCD",
+  "lcdchar.sizeMatrix": "8×8 matrice LED",
+  "lcdchar.sizeOled": "16×16 OLED",
+  "lcdchar.usageMatrix": "Da usare con lc.setRow(0, riga, nome[riga]) (LedControl, MAX7219).",
+  "lcdchar.usageOled": "Da usare con display.drawBitmap(x, y, nome, 16, 16, WHITE) (Adafruit GFX)."
 }
