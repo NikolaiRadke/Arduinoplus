@@ -152,5 +152,6 @@
   "melody.rtttlFailed": "Ce n'est pas une sonnerie RTTTL valide.",
   "melody.pitchesHint": "Les constantes NOTE_ nécessitent pitches.h (Fichier > Exemples > 02.Digital > toneMelody)",
   "melody.durationsHint": "4 = noire, 8 = croche, négatif = pointée",
-  "melody.usage": "Jouer avec {0}"
+  "melody.usage": "Jouer avec {0}",
+  "melody.example": "Charger un exemple..."
 }

@@ -152,5 +152,6 @@
   "melody.rtttlFailed": "Non è una suoneria RTTTL valida.",
   "melody.pitchesHint": "Le costanti NOTE_ richiedono pitches.h (File > Esempi > 02.Digital > toneMelody)",
   "melody.durationsHint": "4 = semiminima, 8 = croma, negativo = puntata",
-  "melody.usage": "Riproduci con {0}"
+  "melody.usage": "Riproduci con {0}",
+  "melody.example": "Carica esempio..."
 }

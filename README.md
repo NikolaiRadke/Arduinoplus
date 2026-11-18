@@ -22,7 +22,7 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
   Zoom with the −/+ buttons or Ctrl + mouse wheel, large bitmaps can be scrolled.
 
   **Import images** (PNG, JPG, GIF, BMP, WebP): the editor switches to a bitmap in the size of the image (scaled down to 128×128 if larger) and turns it into pixels. Choose a smaller size or LCD/matrix afterwards, the image is fitted again. The threshold is chosen automatically (the motif lights up), you can adjust it, use dithering for photos and invert. Touch it up by hand afterwards.
-* **Melody Editor**: Compose melodies for `tone()` on a piano keyboard, play them right in the editor and insert them as note and duration arrays (`NOTE_C4` or Hz) with a ready `playMelody()` function. Imports RTTTL ringtones (like `Tetris:d=4,o=5,b=160:e6,8b,8c6`) and existing melody arrays.
+* **Melody Editor**: Compose melodies for `tone()` on a piano keyboard, play them right in the editor and insert them as note and duration arrays (`NOTE_C4` or Hz) with a ready `playMelody()` function. Imports RTTTL ringtones (like `Tetris:d=4,o=5,b=160:e6,8b,8c6`) and existing melody arrays, and comes with an example (Für Elise).
 * **Sketch Snapshots**: The Arduino IDE has no history. Save the state of all tabs (including unsaved changes) with a note, compare it with the current state later and restore the whole sketch or single files. Before restoring, the current state is saved as snapshot, so nothing gets lost. Snapshots are stored in `~/.arduinoplus/snapshots/`.
 * **TODO List**: Shows all `TODO` and `FIXME` comments of the whole sketch (all tabs and `src/`). Click one to jump there.
 * **About Page**: Version, changelog and a button to uninstall Arduino+ completely.

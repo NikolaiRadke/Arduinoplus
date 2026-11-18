@@ -152,5 +152,6 @@
   "melody.rtttlFailed": "Das ist kein gültiger RTTTL-Klingelton.",
   "melody.pitchesHint": "NOTE_-Konstanten brauchen pitches.h (Datei > Beispiele > 02.Digital > toneMelody)",
   "melody.durationsHint": "4 = Viertel, 8 = Achtel, negativ = punktiert",
-  "melody.usage": "Abspielen mit {0}"
+  "melody.usage": "Abspielen mit {0}",
+  "melody.example": "Beispiel laden..."
 }

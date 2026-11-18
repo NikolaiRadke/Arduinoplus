@@ -17,6 +17,14 @@ const path = require('path');
 const WEBVIEW_SCRIPT = path.join(__dirname, 'melodyEditor.webview.js');
 const NOTE_NAMES = ['C', 'CS', 'D', 'DS', 'E', 'F', 'FS', 'G', 'GS', 'A', 'AS', 'B'];
 const VALID_DURATIONS = [1, 2, 4, 8, 16, 32];
+// Example melodies, public domain only
+const EXAMPLES = [
+    {
+        label: 'Für Elise (Beethoven)',
+        rtttl: 'fuerElise:d=16,o=5,b=80:e,d#,e,d#,e,b4,d,c,8a4,p,c4,e4,a4,8b4,p,e4,g#4,b4,8c,p,e4,' +
+            'e,d#,e,d#,e,b4,d,c,8a4,p,c4,e4,a4,8b4,p,e4,c,b4,4a4'
+    }
+];
 // pitches.h knows NOTE_B0 (MIDI 23, 31 Hz) to NOTE_DS8 (MIDI 111, 4978 Hz)
 const MIN_MIDI = 23;
 const MAX_MIDI = 111;
@@ -156,6 +164,9 @@ class MelodyEditor {
             } else if (message.command === 'copy') {
                 await vscode.env.clipboard.writeText(message.code);
                 vscode.window.showInformationMessage(this.t('lcdchar.copied'));
+            } else if (message.command === 'example') {
+                const example = EXAMPLES[message.index];
+                if (example) this.panel.webview.postMessage({ command: 'load', data: parseRtttl(example.rtttl) });
             } else if (message.command === 'rtttl') {
                 const parsed = parseRtttl(message.text);
                 if (parsed) {
@@ -203,6 +214,7 @@ class MelodyEditor {
         const config = {
             initial,
             noteNames: NOTE_NAMES,
+            examples: EXAMPLES.map(example => example.label),
             minMidi: MIN_MIDI,
             maxMidi: MAX_MIDI,
             labels: {
@@ -232,6 +244,7 @@ class MelodyEditor {
     .sep { width: 1px; height: 22px; background: var(--vscode-panel-border, rgba(128,128,128,.35)); }
     input[type=number], input[type=text] { padding: 3px 5px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border, transparent); }
     input[type=number] { width: 56px; }
+    select { padding: 3px 5px; color: var(--vscode-dropdown-foreground); background: var(--vscode-dropdown-background); border: 1px solid var(--vscode-dropdown-border, transparent); font-family: inherit; }
     input[type=text] { width: 160px; font-family: var(--vscode-editor-font-family); }
     textarea { width: 100%; box-sizing: border-box; height: 52px; padding: 5px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border, transparent); font-family: var(--vscode-editor-font-family); resize: vertical; }
     button { padding: 5px 12px; border: none; border-radius: 2px; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--vscode-button-foreground); background: var(--vscode-button-background); }
@@ -261,6 +274,7 @@ class MelodyEditor {
 <div class="bar">
     <button id="play"></button>
     <label>${esc(t('melody.tempo'))} <input type="number" id="tempo" min="20" max="400"> BPM</label>
+    <select id="example"><option value="">${esc(t('melody.example'))}</option></select>
     <span class="sep"></span>
     <span>${esc(t('melody.duration'))}</span> ${durations}
     <label><input type="checkbox" id="dotted"> ${esc(t('melody.dotted'))}</label>

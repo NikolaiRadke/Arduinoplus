@@ -268,6 +268,16 @@
     document.querySelectorAll('input[name=notes]').forEach(radio => radio.addEventListener('change', renderCode));
     $('insert').addEventListener('click', () => vscode.postMessage({ command: 'insert', code: code() }));
     $('copy').addEventListener('click', () => vscode.postMessage({ command: 'copy', code: code() }));
+    CONFIG.examples.forEach((label, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = label;
+        $('example').appendChild(option);
+    });
+    $('example').addEventListener('change', () => {
+        if ($('example').value !== '') vscode.postMessage({ command: 'example', index: +$('example').value });
+        $('example').value = '';
+    });
     $('importRtttl').addEventListener('click', () => vscode.postMessage({ command: 'rtttl', text: $('rtttl').value }));
 
     // Delete and arrow keys for the selected note (not while typing)

@@ -11,7 +11,7 @@
 - Added pixel editor: 5x8 LCD characters, 8x8 LED matrix images and bitmaps up to 128x128 (Adafruit GFX, U8g2)
 - Pixel editor can import images with automatic threshold, dithering and invert
 - Pixel editor has a zoom (buttons and Ctrl + mouse wheel)
-- Added melody editor with playback, RTTTL import and playMelody() function
+- Added melody editor with playback, RTTTL import, example melody and playMelody() function
 - Snippets can be renamed, imported and exported
 - Added Insert Snippet (`Ctrl+Shift+V`) to pick a snippet from a list
 - Added About page with version, changelog and uninstall button
