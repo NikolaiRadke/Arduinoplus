@@ -1,0 +1,13 @@
+{
+  "command.toggleLineComment": "// Toggle Line Comment",
+  "command.copyToSnippets": "Copy to Snippets",
+  "command.moveToSnippets": "Move to Snippets",
+  "command.openSnippetPanel": "Open Snippet Panel",
+  "command.setAnchor": "Set Anchor",
+  "command.showAnchors": "Show Anchors",
+  "command.duplicateLine": "Duplicate Line Down",
+  "command.about": "About Arduino+",
+  "command.insertSnippet": "Insert Snippet...",
+  "command.insertCommentAnchor": "Insert Comment Anchor",
+  "command.showTodos": "Show TODOs"
+}

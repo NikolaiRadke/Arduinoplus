@@ -10,26 +10,34 @@ const vscode = require('vscode');
 // Feature imports
 const toggleLineComment = require('./features/toggleLineComment');
 const { SnippetManager } = require('./features/snippetManager');
-const { showSnippetPanel, copyToSnippets, moveToSnippets } = require('./features/snippetPanel');
+const { showSnippetPanel, copyToSnippets, moveToSnippets, insertSnippetQuickPick } = require('./features/snippetPanel');
 const { AnchorManager } = require('./features/anchorManager');
 const { duplicateLine } = require('./features/duplicateLine');
+const AboutPanel = require('./features/aboutPanel');
+const { showTodoList } = require('./features/todoList');
+const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
 let snippetManager;
 let anchorManager;
+let aboutPanel;
 
 /**
  * Extension activation
  */
 function activate(context) {
-    console.log('Arduino+ is now active!');
+    // Load translations (IDE language, fallback English)
+    loadTranslations();
 
     // Initialize snippet manager
     snippetManager = new SnippetManager();
 
     // Initialize anchor manager
-    anchorManager = new AnchorManager();
+    anchorManager = new AnchorManager(t);
     anchorManager.createStatusBar(context);
+
+    // About page with changelog and uninstaller
+    aboutPanel = new AboutPanel(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -46,27 +54,43 @@ function activate(context) {
         },
         {
             name: 'arduinoplus.copyToSnippets',
-            handler: () => copyToSnippets(snippetManager)
+            handler: () => copyToSnippets(snippetManager, t)
         },
         {
             name: 'arduinoplus.moveToSnippets',
-            handler: () => moveToSnippets(snippetManager)
+            handler: () => moveToSnippets(snippetManager, t)
         },
         {
             name: 'arduinoplus.openSnippetPanel',
-            handler: () => showSnippetPanel(snippetManager)
+            handler: () => showSnippetPanel(snippetManager, t)
         },
         {
             name: 'arduinoplus.setAnchor',
             handler: () => anchorManager.addAnchor()
         },
         {
+            name: 'arduinoplus.insertSnippet',
+            handler: () => insertSnippetQuickPick(snippetManager, t)
+        },
+        {
+            name: 'arduinoplus.insertCommentAnchor',
+            handler: () => anchorManager.insertCommentAnchor()
+        },
+        {
             name: 'arduinoplus.showAnchors',
             handler: () => anchorManager.showAnchorList()
         },
         {
+            name: 'arduinoplus.showTodos',
+            handler: () => showTodoList(t)
+        },
+        {
             name: 'arduinoplus.duplicateLine',
             handler: () => duplicateLine()
+        },
+        {
+            name: 'arduinoplus.about',
+            handler: () => aboutPanel.show()
         }
     ];
 
@@ -81,7 +105,9 @@ function activate(context) {
  * Extension deactivation
  */
 function deactivate() {
-    console.log('Arduino+ deactivated');
+    if (anchorManager) {
+        anchorManager.stopMigrationTimer();
+    }
 }
 
 module.exports = {

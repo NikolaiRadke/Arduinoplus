@@ -1,0 +1,13 @@
+{
+  "command.toggleLineComment": "// Alternar comentario de línea",
+  "command.copyToSnippets": "Copiar a fragmentos",
+  "command.moveToSnippets": "Mover a fragmentos",
+  "command.openSnippetPanel": "Abrir panel de fragmentos",
+  "command.setAnchor": "Fijar anclaje",
+  "command.showAnchors": "Mostrar anclajes",
+  "command.duplicateLine": "Duplicar línea abajo",
+  "command.about": "Acerca de Arduino+",
+  "command.insertSnippet": "Insertar fragmento...",
+  "command.insertCommentAnchor": "Insertar anclaje de comentario",
+  "command.showTodos": "Mostrar TODOs"
+}

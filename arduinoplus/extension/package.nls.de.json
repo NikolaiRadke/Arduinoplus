@@ -1,0 +1,13 @@
+{
+  "command.toggleLineComment": "// Zeilenkommentar umschalten",
+  "command.copyToSnippets": "In Snippets kopieren",
+  "command.moveToSnippets": "In Snippets verschieben",
+  "command.openSnippetPanel": "Snippet-Panel öffnen",
+  "command.setAnchor": "Anker setzen",
+  "command.showAnchors": "Anker anzeigen",
+  "command.duplicateLine": "Zeile nach unten duplizieren",
+  "command.about": "Über Arduino+",
+  "command.insertSnippet": "Snippet einfügen...",
+  "command.insertCommentAnchor": "Kommentar-Anker einfügen",
+  "command.showTodos": "TODOs anzeigen"
+}

@@ -2,8 +2,9 @@
   "name": "arduinoplus",
   "displayName": "Arduino+",
   "description": "Essential IDE helpers for Arduino development",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "MonsterMaker",
+  "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -21,7 +22,9 @@
     "snippets",
     "anchors",
     "bookmarks",
-    "navigation"
+    "navigation",
+    "todo",
+    "fixme"
   ],
   "activationEvents": [
     "*"
@@ -31,45 +34,69 @@
     "commands": [
       {
         "command": "arduinoplus.toggleLineComment",
-        "title": "// Toggle Line Comment",
+        "title": "%command.toggleLineComment%",
         "category": "Arduino+",
         "icon": "$(symbol-operator)"
       },
       {
         "command": "arduinoplus.copyToSnippets",
-        "title": "Copy to Snippets",
+        "title": "%command.copyToSnippets%",
         "category": "Arduino+",
         "icon": "$(files)"
       },
       {
         "command": "arduinoplus.moveToSnippets",
-        "title": "Move to Snippets",
+        "title": "%command.moveToSnippets%",
         "category": "Arduino+",
         "icon": "$(arrow-right)"
       },
       {
         "command": "arduinoplus.openSnippetPanel",
-        "title": "Open Snippet Panel",
+        "title": "%command.openSnippetPanel%",
         "category": "Arduino+",
         "icon": "$(list-unordered)"
       },
       {
         "command": "arduinoplus.setAnchor",
-        "title": "Set Anchor",
+        "title": "%command.setAnchor%",
         "category": "Arduino+",
         "icon": "$(bookmark)"
       },
       {
         "command": "arduinoplus.showAnchors",
-        "title": "Show Anchors",
+        "title": "%command.showAnchors%",
         "category": "Arduino+",
         "icon": "$(list-flat)"
       },
       {
         "command": "arduinoplus.duplicateLine",
-        "title": "Duplicate Line Down",
+        "title": "%command.duplicateLine%",
         "category": "Arduino+",
         "icon": "$(files)"
+      },
+      {
+        "command": "arduinoplus.about",
+        "title": "%command.about%",
+        "category": "Arduino+",
+        "icon": "$(info)"
+      },
+      {
+        "command": "arduinoplus.insertSnippet",
+        "title": "%command.insertSnippet%",
+        "category": "Arduino+",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "arduinoplus.insertCommentAnchor",
+        "title": "%command.insertCommentAnchor%",
+        "category": "Arduino+",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "arduinoplus.showTodos",
+        "title": "%command.showTodos%",
+        "category": "Arduino+",
+        "icon": "$(checklist)"
       }
     ],
     "keybindings": [
@@ -96,39 +123,73 @@
         "key": "ctrl+shift+d",
         "mac": "cmd+shift+d",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "arduinoplus.insertSnippet",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "arduinoplus.menu",
+        "label": "Arduino+"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "arduinoplus.toggleLineComment",
+          "submenu": "arduinoplus.menu",
           "group": "1_arduinoplus@1"
+        }
+      ],
+      "arduinoplus.menu": [
+        {
+          "command": "arduinoplus.toggleLineComment",
+          "group": "1_edit@1"
         },
         {
           "command": "arduinoplus.duplicateLine",
-          "group": "1_arduinoplus@2"
+          "group": "1_edit@2"
         },
         {
           "command": "arduinoplus.copyToSnippets",
-          "group": "1_arduinoplus@3",
+          "group": "2_snippets@1",
           "when": "editorHasSelection"
         },
         {
           "command": "arduinoplus.moveToSnippets",
-          "group": "1_arduinoplus@4",
+          "group": "2_snippets@2",
           "when": "editorHasSelection"
         },
         {
+          "command": "arduinoplus.insertSnippet",
+          "group": "2_snippets@3"
+        },
+        {
           "command": "arduinoplus.openSnippetPanel",
-          "group": "1_arduinoplus@5"
+          "group": "2_snippets@4"
         },
         {
           "command": "arduinoplus.setAnchor",
-          "group": "1_arduinoplus@6"
+          "group": "3_anchors@1"
+        },
+        {
+          "command": "arduinoplus.insertCommentAnchor",
+          "group": "3_anchors@2"
         },
         {
           "command": "arduinoplus.showAnchors",
-          "group": "1_arduinoplus@7"
+          "group": "3_anchors@3"
+        },
+        {
+          "command": "arduinoplus.showTodos",
+          "group": "4_tools@1"
+        },
+        {
+          "command": "arduinoplus.about",
+          "group": "9_about@1"
         }
       ]
     }
