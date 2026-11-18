@@ -23,6 +23,17 @@ const EXAMPLES = [
         label: 'Für Elise (Beethoven)',
         rtttl: 'fuerElise:d=16,o=5,b=80:e,d#,e,d#,e,b4,d,c,8a4,p,c4,e4,a4,8b4,p,e4,g#4,b4,8c,p,e4,' +
             'e,d#,e,d#,e,b4,d,c,8a4,p,c4,e4,a4,8b4,p,e4,c,b4,4a4'
+    },
+    {
+        label: 'Ode an die Freude (Beethoven)',
+        rtttl: 'odeAnDieFreude:d=4,o=5,b=120:e,e,f,g,g,f,e,d,c,c,d,e,e.,8d,2d,' +
+            'e,e,f,g,g,f,e,d,c,c,d,e,d.,8c,2c'
+    },
+    {
+        // Russian folk song (19th century), the melody known from Tetris
+        label: 'Korobeiniki (Tetris)',
+        rtttl: 'korobeiniki:d=4,o=5,b=144:e,8b4,8c,d,8c,8b4,a4,8a4,8c,e,8d,8c,b.4,8c,d,e,c,a4,2a4,' +
+            '8p,d,8f,a,8g,8f,e.,8c,e,8d,8c,b4,8b4,8c,d,e,c,a4,2a4'
     }
 ];
 // pitches.h knows NOTE_B0 (MIDI 23, 31 Hz) to NOTE_DS8 (MIDI 111, 4978 Hz)
