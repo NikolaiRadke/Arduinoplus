@@ -25,6 +25,7 @@
     let cell = 32;
     let paintValue = null;
     let codeScheduled = false;
+    let source = null; // Imported image: { img, width, height }
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -192,6 +193,10 @@
         pixels = next;
         widthInput.value = width;
         heightInput.value = height;
+        if (source) {
+            applyImage();
+            return;
+        }
         drawAll();
         updateCode();
     }
@@ -247,6 +252,110 @@
     document.getElementById('insert').addEventListener('click', () => vscode.postMessage({ command: 'insert', code: code() }));
     document.getElementById('copy').addEventListener('click', () => vscode.postMessage({ command: 'copy', code: code() }));
 
+    // --- Image import ---
+
+    /**
+     * Gray values of the image, fitted into width x height (aspect ratio kept,
+     * centered). Transparent parts become white background.
+     */
+    function grayFromImage(w, h) {
+        const scale = Math.min(w / source.width, h / source.height);
+        const dw = Math.max(1, Math.round(source.width * scale));
+        const dh = Math.max(1, Math.round(source.height * scale));
+        const dx = Math.floor((w - dw) / 2);
+        const dy = Math.floor((h - dh) / 2);
+
+        // Halve step by step, a single big downscale loses thin lines
+        let src = source.img;
+        let sw = source.width;
+        let sh = source.height;
+        while (sw / 2 >= dw && sh / 2 >= dh) {
+            const step = document.createElement('canvas');
+            step.width = Math.ceil(sw / 2);
+            step.height = Math.ceil(sh / 2);
+            step.getContext('2d').drawImage(src, 0, 0, step.width, step.height);
+            src = step;
+            sw = step.width;
+            sh = step.height;
+        }
+
+        const out = document.createElement('canvas');
+        out.width = w;
+        out.height = h;
+        const o = out.getContext('2d');
+        o.fillStyle = '#ffffff';
+        o.fillRect(0, 0, w, h);
+        o.imageSmoothingEnabled = true;
+        o.drawImage(src, dx, dy, dw, dh);
+        const data = o.getImageData(0, 0, w, h).data;
+        const gray = new Float32Array(w * h);
+        for (let i = 0; i < w * h; i++) {
+            gray[i] = 0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2];
+        }
+        return gray;
+    }
+
+    /**
+     * Dark pixels become "on". Optional Floyd-Steinberg dithering for photos.
+     */
+    function toPixels(gray, w, h, threshold, dither, invert) {
+        const g = Float32Array.from(gray);
+        const out = new Uint8Array(w * h);
+        for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+                const i = y * w + x;
+                const on = g[i] < threshold;
+                out[i] = on !== invert ? 1 : 0;
+                if (!dither) continue;
+                const error = g[i] - (on ? 0 : 255);
+                if (x + 1 < w) g[i + 1] += error * 7 / 16;
+                if (y + 1 < h) {
+                    if (x > 0) g[i + w - 1] += error * 3 / 16;
+                    g[i + w] += error * 5 / 16;
+                    if (x + 1 < w) g[i + w + 1] += error * 1 / 16;
+                }
+            }
+        }
+        return out;
+    }
+
+    function applyImage() {
+        const threshold = +document.getElementById('threshold').value;
+        document.getElementById('thresholdValue').textContent = threshold;
+        pixels = toPixels(grayFromImage(width, height), width, height, threshold,
+            document.getElementById('dither').checked, document.getElementById('invertImage').checked);
+        const bitmap = mode === 'gfx' || mode === 'xbm';
+        document.getElementById('originalSize').style.display =
+            bitmap && source.width <= MAX_SIZE && source.height <= MAX_SIZE ? '' : 'none';
+        drawAll();
+        updateCode();
+    }
+
+    function closeImage() {
+        source = null;
+        document.getElementById('importPanel').style.display = 'none';
+    }
+
+    document.getElementById('importImage').addEventListener('click', () => vscode.postMessage({ command: 'importImage' }));
+    document.getElementById('threshold').addEventListener('input', () => source && applyImage());
+    document.getElementById('dither').addEventListener('change', () => source && applyImage());
+    document.getElementById('invertImage').addEventListener('change', () => source && applyImage());
+    document.getElementById('originalSize').addEventListener('click', () => source && resize(source.width, source.height));
+    document.getElementById('closeImage').addEventListener('click', closeImage);
+
+    function loadImage(dataUrl, name) {
+        const img = new Image();
+        img.onload = () => {
+            source = { img, width: img.naturalWidth, height: img.naturalHeight };
+            nameInput.value = name.replace(/[^A-Za-z0-9_]/g, '_');
+            document.getElementById('imageName').textContent = name + ' (' + source.width + '×' + source.height + ')';
+            document.getElementById('importPanel').style.display = 'block';
+            applyImage();
+        };
+        img.onerror = () => vscode.postMessage({ command: 'imageError', error: name });
+        img.src = dataUrl;
+    }
+
     // --- Loading ---
 
     function load(data) {
@@ -263,7 +372,11 @@
     }
 
     window.addEventListener('message', event => {
-        if (event.data.command === 'load') load(event.data.data);
+        if (event.data.command === 'load') {
+            closeImage();
+            load(event.data.data);
+        }
+        if (event.data.command === 'image') loadImage(event.data.dataUrl, event.data.name);
     });
 
     load(CONFIG.initial);

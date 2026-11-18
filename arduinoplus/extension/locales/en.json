@@ -86,5 +86,14 @@
   "lcdchar.modeGfx": "Bitmap (Adafruit GFX)",
   "lcdchar.modeXbm": "Bitmap (U8g2, XBM)",
   "lcdchar.usageGfx": "Use it with display.drawBitmap(x, y, {0}, {1}, {2}, WHITE).",
-  "lcdchar.usageXbm": "Use it with u8g2.drawXBMP(x, y, {0})."
+  "lcdchar.usageXbm": "Use it with u8g2.drawXBMP(x, y, {0}).",
+  "lcdchar.images": "Images",
+  "lcdchar.importImage": "Import Image...",
+  "lcdchar.importFailed": "Could not load image: {0}",
+  "lcdchar.threshold": "Threshold",
+  "lcdchar.dither": "Dithering (photos)",
+  "lcdchar.invertImage": "Invert image",
+  "lcdchar.originalSize": "Original size",
+  "lcdchar.closeImage": "Done",
+  "lcdchar.importHint": "Threshold and options redraw the whole image. Paint by hand once you click Done."
 }

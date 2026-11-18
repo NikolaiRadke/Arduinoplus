@@ -18,6 +18,11 @@ const path = require('path');
 const { parseNumber } = require('./numberConverter');
 
 const MAX_SIZE = 128;
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+const IMAGE_TYPES = {
+    png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg',
+    gif: 'image/gif', bmp: 'image/bmp', webp: 'image/webp'
+};
 const WEBVIEW_SCRIPT = path.join(__dirname, 'pixelEditor.webview.js');
 
 /**
@@ -162,10 +167,39 @@ class PixelEditor {
             } else if (message.command === 'copy') {
                 await vscode.env.clipboard.writeText(message.code);
                 vscode.window.showInformationMessage(this.t('lcdchar.copied'));
+            } else if (message.command === 'importImage') {
+                await this.importImage();
+            } else if (message.command === 'imageError') {
+                vscode.window.showErrorMessage(this.t('lcdchar.importFailed', message.error || ''));
             }
         });
 
         this.panel.webview.html = this.getWebviewContent(initial);
+    }
+
+    /**
+     * Let the user pick an image and send it to the webview as data URL.
+     * The webview scales it and turns it into pixels.
+     */
+    async importImage() {
+        const uris = await vscode.window.showOpenDialog({
+            canSelectMany: false,
+            filters: { [this.t('lcdchar.images')]: Object.keys(IMAGE_TYPES) },
+            openLabel: this.t('lcdchar.importImage')
+        });
+        if (!uris || uris.length === 0 || !this.panel) return;
+
+        const file = uris[0].fsPath;
+        const type = IMAGE_TYPES[path.extname(file).slice(1).toLowerCase()];
+        try {
+            if (!type) throw new Error(path.extname(file));
+            if (fs.statSync(file).size > MAX_IMAGE_BYTES) throw new Error('> 20 MB');
+            const dataUrl = `data:${type};base64,` + fs.readFileSync(file).toString('base64');
+            const name = path.basename(file, path.extname(file));
+            this.panel.webview.postMessage({ command: 'image', dataUrl, name });
+        } catch (error) {
+            vscode.window.showErrorMessage(this.t('lcdchar.importFailed', error.message));
+        }
     }
 
     /**
@@ -225,7 +259,7 @@ class PixelEditor {
 <html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
 <style>
     body { color: var(--vscode-foreground); background: var(--vscode-editor-background); font-family: var(--vscode-font-family); font-size: var(--vscode-font-size); padding: 16px; user-select: none; }
     .layout { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
@@ -247,6 +281,10 @@ class PixelEditor {
     button.secondary:hover { background: var(--vscode-button-secondaryHoverBackground); }
     button.small { padding: 2px 8px; font-size: 12px; }
     .hint { margin-top: 8px; font-size: 12px; color: var(--vscode-descriptionForeground); user-select: text; }
+    #importPanel { display: none; margin-top: 12px; padding: 10px 12px; border-radius: 4px; border: 1px solid var(--vscode-panel-border, rgba(128,128,128,.35)); max-width: 420px; }
+    #importPanel .row { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+    #importPanel input[type=range] { flex: 1; min-width: 140px; }
+    #thresholdValue { width: 32px; text-align: right; font-family: var(--vscode-editor-font-family); }
 </style>
 </head>
 <body>
@@ -260,6 +298,26 @@ class PixelEditor {
             <button class="secondary" data-shift="right" title="${esc(t('lcdchar.shift'))}">→</button>
             <button class="secondary" id="invert">${esc(t('lcdchar.invert'))}</button>
             <button class="secondary" id="clear">${esc(t('lcdchar.clear'))}</button>
+        </div>
+        <div class="tools">
+            <button class="secondary" id="importImage">🖼️ ${esc(t('lcdchar.importImage'))}</button>
+        </div>
+        <div id="importPanel">
+            <div class="row"><strong id="imageName"></strong></div>
+            <div class="row">
+                <span>${esc(t('lcdchar.threshold'))}</span>
+                <input type="range" id="threshold" min="1" max="254" value="128">
+                <span id="thresholdValue">128</span>
+            </div>
+            <div class="row">
+                <label><input type="checkbox" id="dither"> ${esc(t('lcdchar.dither'))}</label>
+                <label><input type="checkbox" id="invertImage"> ${esc(t('lcdchar.invertImage'))}</label>
+            </div>
+            <div class="row">
+                <button class="secondary small" id="originalSize">${esc(t('lcdchar.originalSize'))}</button>
+                <button class="small" id="closeImage">${esc(t('lcdchar.closeImage'))}</button>
+            </div>
+            <div class="hint">${esc(t('lcdchar.importHint'))}</div>
         </div>
         <div class="hint">${esc(t('lcdchar.hint'))}</div>
     </div>

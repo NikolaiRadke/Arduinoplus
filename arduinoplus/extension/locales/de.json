@@ -86,5 +86,14 @@
   "lcdchar.modeGfx": "Bitmap (Adafruit GFX)",
   "lcdchar.modeXbm": "Bitmap (U8g2, XBM)",
   "lcdchar.usageGfx": "Verwenden mit display.drawBitmap(x, y, {0}, {1}, {2}, WHITE).",
-  "lcdchar.usageXbm": "Verwenden mit u8g2.drawXBMP(x, y, {0})."
+  "lcdchar.usageXbm": "Verwenden mit u8g2.drawXBMP(x, y, {0}).",
+  "lcdchar.images": "Bilder",
+  "lcdchar.importImage": "Bild importieren...",
+  "lcdchar.importFailed": "Bild konnte nicht geladen werden: {0}",
+  "lcdchar.threshold": "Schwellwert",
+  "lcdchar.dither": "Rastern (Fotos)",
+  "lcdchar.invertImage": "Bild invertieren",
+  "lcdchar.originalSize": "Originalgröße",
+  "lcdchar.closeImage": "Fertig",
+  "lcdchar.importHint": "Schwellwert und Optionen zeichnen das ganze Bild neu. Male von Hand, nachdem du auf Fertig geklickt hast."
 }

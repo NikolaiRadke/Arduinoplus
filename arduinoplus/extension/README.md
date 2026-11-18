@@ -17,6 +17,8 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
   * Bitmaps of any size up to 128×128 for OLEDs and TFTs, either for Adafruit GFX (`display.drawBitmap`) or for U8g2 (`u8g2.drawXBMP`)
 
   Select an existing array before opening the editor to change it, type and size are detected automatically.
+
+  **Import images** (PNG, JPG, GIF, BMP, WebP): the image is fitted into the grid and turned into pixels with an adjustable threshold, optional dithering for photos and invert. Touch it up by hand afterwards.
 * **TODO List**: Shows all `TODO` and `FIXME` comments of the whole sketch (all tabs and `src/`). Click one to jump there.
 * **About Page**: Version, changelog and a button to uninstall Arduino+ completely.
 * 🌍 **Automatic language detection** based on IDE settings. Supported are: **en, de, es, fr, it**.
