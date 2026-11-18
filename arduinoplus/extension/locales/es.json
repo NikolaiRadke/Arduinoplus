@@ -153,5 +153,6 @@
   "melody.pitchesHint": "Las constantes NOTE_ necesitan pitches.h (Archivo > Ejemplos > 02.Digital > toneMelody)",
   "melody.durationsHint": "4 = negra, 8 = corchea, negativo = con puntillo",
   "melody.usage": "Reproducir con {0}",
-  "melody.example": "Cargar ejemplo..."
+  "melody.example": "Cargar ejemplo...",
+  "about.uninstallVSCode": "En VS Code, Arduino+ se desinstala en la vista de extensiones. Tus fragmentos, anclajes e instantáneas en ~/.arduinoplus se conservan; borra la carpeta tú mismo si ya no los necesitas."
 }

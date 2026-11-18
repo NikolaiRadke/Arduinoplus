@@ -1,7 +1,7 @@
 ![Arduino+](https://www.nikolairadke.de/aiduino/arduinoplus_back.png)
 # Arduino+ for a better Arduino IDE
 
-Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for a better coding experience.
+Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for a better coding experience. It also runs in VS Code.
 
 ## Features
 
@@ -64,6 +64,11 @@ chmod +x install_arduinoplus_macos.sh
 
 Restart the Arduino IDE afterwards.
 
+#### VS Code
+Install **Arduino+** from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NikolaiRadke.arduinoplus) or search for *Arduino+* in the Extensions view.
+
+VS Code already has *Toggle Line Comment* and *Duplicate Line*, so Arduino+ hides them there. The shortcuts for anchors only work in the Arduino IDE, because VS Code uses them for building and debugging. All features are in the context menu → *Arduino+*.
+
 ## Usage
 
 You can access all features through the right click context menu → *Arduino+*.
@@ -106,6 +111,8 @@ Uninstall Arduino+ either with the **Extension Manager** or with the button on t
 - The deployed extension: `~/.arduinoIDE/deployedPlugins/arduinoplus/`
 
 Before anything is deleted, you will be asked twice and see the list of files. Restart the Arduino IDE afterwards.
+
+In **VS Code** uninstall Arduino+ in the Extensions view. Your data in `~/.arduinoplus/` is kept there, delete it yourself if you don't need it anymore.
 
 ## Related Projects
 

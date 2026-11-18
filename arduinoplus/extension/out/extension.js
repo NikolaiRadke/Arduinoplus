@@ -21,6 +21,7 @@ const { SnapshotManager } = require('./features/snapshotManager');
 const { ColorPicker } = require('./features/colorPicker');
 const { MelodyEditor } = require('./features/melodyEditor');
 const { loadTranslations, t } = require('./utils/localeLoader');
+const { isArduinoIDE } = require('./utils/host');
 
 // Global manager instances
 let snippetManager;
@@ -38,6 +39,14 @@ function activate(context) {
     // Load translations (IDE language, fallback English)
     loadTranslations();
 
+    // In VS Code some menu entries and shortcuts are hidden (see package.json).
+    // The context key is only set in VS Code, so the Arduino IDE shows everything
+    // even if it ignores setContext.
+    const arduinoIDE = isArduinoIDE();
+    if (!arduinoIDE) {
+        vscode.commands.executeCommand('setContext', 'arduinoplus.isVSCode', true);
+    }
+
     // Initialize snippet manager
     snippetManager = new SnippetManager();
 
@@ -46,7 +55,7 @@ function activate(context) {
     anchorManager.createStatusBar(context);
 
     // About page with changelog and uninstaller
-    aboutPanel = new AboutPanel(t);
+    aboutPanel = new AboutPanel(t, arduinoIDE);
 
     // Pixel editor for LCD characters, LED matrices and bitmaps
     pixelEditor = new PixelEditor(t);

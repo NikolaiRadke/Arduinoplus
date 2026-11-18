@@ -23,9 +23,11 @@ const IS_WINDOWS = process.platform === 'win32';
 class AboutPanel {
     /**
      * @param {Function} t - Translation function
+     * @param {boolean} arduinoIDE - False in VS Code: uninstalling is done there by VS Code itself
      */
-    constructor(t) {
+    constructor(t, arduinoIDE = true) {
         this.t = t;
+        this.arduinoIDE = arduinoIDE;
         this.panel = null;
     }
 
@@ -146,6 +148,7 @@ class AboutPanel {
      * Ask (once or twice, see uninstall.json) and uninstall
      */
     async handleUninstall() {
+        if (!this.arduinoIDE) return;
         const config = this.readJson('uninstall.json');
         if (!config) {
             vscode.window.showErrorMessage(this.t('about.noUninstaller'));
@@ -204,9 +207,9 @@ class AboutPanel {
 
         let changelog = '';
         try {
-            changelog = new MarkdownRenderer().render(
-                fs.readFileSync(path.join(EXTENSION_DIR, 'CHANGELOG.md'), 'utf8')
-            );
+            // vsce packs it as changelog.md, the hand-made VSIX as CHANGELOG.md
+            const file = fs.readdirSync(EXTENSION_DIR).find(name => name.toLowerCase() === 'changelog.md');
+            changelog = new MarkdownRenderer().render(fs.readFileSync(path.join(EXTENSION_DIR, file), 'utf8'));
         } catch (error) {
             changelog = `<p class="muted">${esc(t('about.noChangelog'))}</p>`;
         }
@@ -266,17 +269,19 @@ class AboutPanel {
 <h2>${esc(t('about.changelog'))}</h2>
 <div class="changelog">${changelog}</div>
 
-<div class="danger-zone">
+${this.arduinoIDE ? `<div class="danger-zone">
     <h2>⚠️ ${esc(t('about.uninstall'))}</h2>
     <p>${esc(t('about.uninstallInfo'))}</p>
     <button id="uninstall">${esc(t('about.uninstallButton'))}</button>
-</div>
+</div>` : `<h2>${esc(t('about.uninstall'))}</h2>
+<p class="muted">${esc(t('about.uninstallVSCode'))}</p>`}
 
 <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
-    document.getElementById('uninstall').addEventListener('click', () => {
-        vscode.postMessage({ command: 'uninstall' });
-    });
+    const uninstall = document.getElementById('uninstall');
+    if (uninstall) {
+        uninstall.addEventListener('click', () => vscode.postMessage({ command: 'uninstall' }));
+    }
     document.addEventListener('click', event => {
         const anchor = event.target.closest('a');
         if (!anchor) return;

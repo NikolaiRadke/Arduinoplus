@@ -153,5 +153,6 @@
   "melody.pitchesHint": "NOTE_-Konstanten brauchen pitches.h (Datei > Beispiele > 02.Digital > toneMelody)",
   "melody.durationsHint": "4 = Viertel, 8 = Achtel, negativ = punktiert",
   "melody.usage": "Abspielen mit {0}",
-  "melody.example": "Beispiel laden..."
+  "melody.example": "Beispiel laden...",
+  "about.uninstallVSCode": "In VS Code deinstallierst du Arduino+ in der Erweiterungen-Ansicht. Deine Snippets, Anker und Snapshots in ~/.arduinoplus bleiben dabei erhalten. Lösche den Ordner selbst, wenn du sie nicht mehr brauchst."
 }

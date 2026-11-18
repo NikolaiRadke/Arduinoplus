@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Language="en-US" Id="arduinoplus" Version="1.1.0" Publisher="MonsterMaker"/>
+    <Identity Language="en-US" Id="arduinoplus" Version="1.1.1" Publisher="NikolaiRadke"/>
     <DisplayName>Arduino+</DisplayName>
     <Description xml:space="preserve">Essential IDE helpers for Arduino development</Description>
     <Tags>arduino,arduinoIDE,comment,toggle,editor,tools,snippets,anchors,bookmarks,navigation</Tags>

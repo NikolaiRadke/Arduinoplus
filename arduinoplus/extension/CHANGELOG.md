@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.1 18.11.2026
+
+### Features
+- Runs in VS Code and is available in the Visual Studio Marketplace
+
+### Changes
+- In VS Code, Toggle Line Comment and Duplicate Line are hidden (VS Code has them already) and the anchor shortcuts are off (they collide with Build and Debug)
+- In VS Code, the About page refers to the Extensions view for uninstalling
+- Publisher is now NikolaiRadke, like AI.duino
+- The extension starts after the IDE has finished loading
+
 ## 1.1.0 18.11.2026
 
 ### Features

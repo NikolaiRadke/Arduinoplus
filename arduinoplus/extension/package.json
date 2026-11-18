@@ -2,15 +2,20 @@
   "name": "arduinoplus",
   "displayName": "Arduino+",
   "description": "Essential IDE helpers for Arduino development",
-  "version": "1.1.0",
-  "publisher": "MonsterMaker",
+  "version": "1.1.1",
+  "publisher": "NikolaiRadke",
   "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#2bc4b6",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.60.0"
   },
   "categories": [
     "Other",
-    "Programming Languages"
+    "Snippets",
+    "Education"
   ],
   "keywords": [
     "arduino",
@@ -44,7 +49,7 @@
     "rtttl"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -151,25 +156,25 @@
         "command": "arduinoplus.toggleLineComment",
         "key": "ctrl+/",
         "mac": "cmd+/",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && !arduinoplus.isVSCode"
       },
       {
         "command": "arduinoplus.setAnchor",
         "key": "ctrl+shift+b",
         "mac": "cmd+shift+b",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && !arduinoplus.isVSCode"
       },
       {
         "command": "arduinoplus.showAnchors",
         "key": "ctrl+shift+a",
         "mac": "cmd+shift+a",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && !arduinoplus.isVSCode"
       },
       {
         "command": "arduinoplus.duplicateLine",
         "key": "ctrl+shift+d",
         "mac": "cmd+shift+d",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && !arduinoplus.isVSCode"
       },
       {
         "command": "arduinoplus.insertSnippet",
@@ -194,11 +199,13 @@
       "arduinoplus.menu": [
         {
           "command": "arduinoplus.toggleLineComment",
-          "group": "1_edit@1"
+          "group": "1_edit@1",
+          "when": "!arduinoplus.isVSCode"
         },
         {
           "command": "arduinoplus.duplicateLine",
-          "group": "1_edit@2"
+          "group": "1_edit@2",
+          "when": "!arduinoplus.isVSCode"
         },
         {
           "command": "arduinoplus.convertNumber",
@@ -258,6 +265,16 @@
           "command": "arduinoplus.about",
           "group": "9_about@1"
         }
+      ],
+      "commandPalette": [
+        {
+          "command": "arduinoplus.toggleLineComment",
+          "when": "!arduinoplus.isVSCode"
+        },
+        {
+          "command": "arduinoplus.duplicateLine",
+          "when": "!arduinoplus.isVSCode"
+        }
       ]
     }
   },
@@ -268,5 +285,9 @@
     "type": "git",
     "url": "https://github.com/NikolaiRadke/Arduinoplus"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/NikolaiRadke/Arduinoplus/issues"
+  },
+  "homepage": "https://github.com/NikolaiRadke/Arduinoplus#readme"
 }
