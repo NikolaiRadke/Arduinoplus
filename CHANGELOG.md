@@ -3,12 +3,17 @@
 ## 1.1.0 18.11.2026
 
 ### Features
+- Added comment anchors: `// @anchor Name` in the code, shown in the anchor list
+- Added TODO list for TODO and FIXME comments of the whole sketch
+- Snippets can be renamed, imported and exported
+- Added Insert Snippet (`Ctrl+Shift+V`) to pick a snippet from a list
 - Added About page with version, changelog and uninstall button
 - Added an icon
 - Added translations: German, Spanish, French and Italian (English stays the default)
 - README and changelog are now part of the VSIX and are shown in the Extension Manager
 
 ### Changes
+- Anchors follow their line when lines are added or removed above
 - Uninstalling asks twice and lists all files that will be deleted, because your snippets and anchors are deleted as well
 
 ### Bugfixes

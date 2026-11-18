@@ -6,5 +6,8 @@
   "command.setAnchor": "Imposta ancora",
   "command.showAnchors": "Mostra ancore",
   "command.duplicateLine": "Duplica riga sotto",
-  "command.about": "Informazioni su Arduino+"
+  "command.about": "Informazioni su Arduino+",
+  "command.insertSnippet": "Inserisci snippet...",
+  "command.insertCommentAnchor": "Inserisci ancora di commento",
+  "command.showTodos": "Mostra TODO"
 }

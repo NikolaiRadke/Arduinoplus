@@ -6,6 +6,9 @@
  */
 
 const vscode = require('vscode');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
 let snippetPanel = null;
 
@@ -62,6 +65,7 @@ function generatePanelHTML(snippets, t) {
             <div class="snippet-buttons">
                 <button onclick="copySnippet(${snippet.id})">${escapeHtml(t('snippet.copy'))}</button>
                 <button onclick="insertSnippet(${snippet.id})">${escapeHtml(t('snippet.insert'))}</button>
+                <button onclick="renameSnippet(${snippet.id})">${escapeHtml(t('snippet.rename'))}</button>
                 <button onclick="deleteSnippet(${snippet.id})">${escapeHtml(t('snippet.delete'))}</button>
             </div>
         </div>
@@ -117,6 +121,19 @@ function generatePanelHTML(snippets, t) {
             .snippet-buttons button:hover {
                 background: var(--vscode-button-hoverBackground);
             }
+            .panel-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+            .panel-header .snippet-buttons button {
+                background: var(--vscode-button-secondaryBackground);
+                color: var(--vscode-button-secondaryForeground);
+            }
+            .panel-header .snippet-buttons button:hover {
+                background: var(--vscode-button-secondaryHoverBackground);
+            }
             .empty-state {
                 text-align: center;
                 padding: 40px;
@@ -125,7 +142,13 @@ function generatePanelHTML(snippets, t) {
         </style>
     </head>
     <body>
-        <h2>${escapeHtml(t('snippet.heading'))}</h2>
+        <div class="panel-header">
+            <h2>${escapeHtml(t('snippet.heading'))}</h2>
+            <div class="snippet-buttons">
+                <button onclick="importSnippets()">${escapeHtml(t('snippet.import'))}</button>
+                <button onclick="exportSnippets()"${snippets.length === 0 ? ' disabled' : ''}>${escapeHtml(t('snippet.export'))}</button>
+            </div>
+        </div>
         ${snippets.length === 0 ? 
             `<div class="empty-state">${escapeHtml(t('snippet.empty'))}</div>` 
             : snippetItems
@@ -143,6 +166,18 @@ function generatePanelHTML(snippets, t) {
             
             function deleteSnippet(id) {
                 vscode.postMessage({ command: 'delete', id: id });
+            }
+            
+            function renameSnippet(id) {
+                vscode.postMessage({ command: 'rename', id: id });
+            }
+            
+            function importSnippets() {
+                vscode.postMessage({ command: 'import' });
+            }
+            
+            function exportSnippets() {
+                vscode.postMessage({ command: 'export' });
             }
             
             // Handle textarea changes
@@ -174,6 +209,15 @@ function handlePanelMessage(message, manager, t) {
             break;
         case 'update':
             manager.updateSnippet(message.id, message.content);
+            break;
+        case 'rename':
+            renameSnippetById(message.id, manager, t);
+            break;
+        case 'import':
+            importSnippetsFromFile(manager, t);
+            break;
+        case 'export':
+            exportSnippetsToFile(manager, t);
             break;
     }
 }
@@ -220,6 +264,111 @@ function deleteSnippetById(id, manager, t) {
     manager.deleteSnippet(id);
     updatePanelContent(manager, t);
     vscode.window.showInformationMessage(t('snippet.deleted'));
+}
+
+/**
+ * Rename snippet by ID
+ */
+async function renameSnippetById(id, manager, t) {
+    const snippet = manager.getAllSnippets().find(s => s.id === id);
+    if (!snippet) return;
+
+    const name = await vscode.window.showInputBox({
+        prompt: t('snippet.renamePrompt'),
+        value: snippet.name
+    });
+    if (!name || name === snippet.name) return;
+
+    manager.renameSnippet(id, name);
+    updatePanelContent(manager, t);
+}
+
+/**
+ * Import snippets from a JSON file (added to the existing ones)
+ */
+async function importSnippetsFromFile(manager, t) {
+    const uris = await vscode.window.showOpenDialog({
+        canSelectMany: false,
+        filters: { 'JSON': ['json'] },
+        openLabel: t('snippet.import')
+    });
+    if (!uris || uris.length === 0) return;
+
+    let count = 0;
+    try {
+        const list = JSON.parse(fs.readFileSync(uris[0].fsPath, 'utf8'));
+        count = manager.importSnippets(list);
+    } catch (error) {
+        count = 0;
+    }
+
+    if (count > 0) {
+        updatePanelContent(manager, t);
+        vscode.window.showInformationMessage(t('snippet.imported', count));
+    } else {
+        vscode.window.showWarningMessage(t('snippet.importFailed'));
+    }
+}
+
+/**
+ * Export all snippets to a JSON file
+ */
+async function exportSnippetsToFile(manager, t) {
+    const uri = await vscode.window.showSaveDialog({
+        defaultUri: vscode.Uri.file(path.join(os.homedir(), 'arduinoplus-snippets.json')),
+        filters: { 'JSON': ['json'] },
+        saveLabel: t('snippet.export')
+    });
+    if (!uri) return;
+
+    try {
+        fs.writeFileSync(uri.fsPath, JSON.stringify(manager.exportSnippets(), null, 2), 'utf8');
+        vscode.window.showInformationMessage(t('snippet.exported', manager.getAllSnippets().length, path.basename(uri.fsPath)));
+    } catch (error) {
+        vscode.window.showErrorMessage(t('snippet.exportFailed', error.message));
+    }
+}
+
+/**
+ * Pick a snippet in a QuickPick and insert it at the cursor
+ */
+async function insertSnippetQuickPick(manager, t) {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showWarningMessage(t('common.noEditor'));
+        return;
+    }
+
+    const snippets = manager.getAllSnippets();
+    if (snippets.length === 0) {
+        vscode.window.showInformationMessage(t('snippet.empty'));
+        return;
+    }
+
+    const items = snippets.map(snippet => {
+        const lines = snippet.content.split(/\r?\n/);
+        const firstLine = lines.find(line => line.trim()) || '';
+        return {
+            label: `📋 ${snippet.name}`,
+            description: t('snippet.lines', lines.length),
+            detail: firstLine.trim().substring(0, 80),
+            snippet
+        };
+    });
+
+    const selected = await vscode.window.showQuickPick(items, {
+        placeHolder: t('snippet.pickPlaceholder'),
+        matchOnDetail: true
+    });
+    if (!selected) return;
+
+    await editor.edit(editBuilder => {
+        if (editor.selection.isEmpty) {
+            editBuilder.insert(editor.selection.active, selected.snippet.content);
+        } else {
+            editBuilder.replace(editor.selection, selected.snippet.content);
+        }
+    });
 }
 
 /**
@@ -313,5 +462,6 @@ module.exports = {
     showSnippetPanel,
     updatePanelContent,
     copyToSnippets,
-    moveToSnippets
+    moveToSnippets,
+    insertSnippetQuickPick
 };

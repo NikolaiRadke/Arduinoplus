@@ -6,5 +6,8 @@
   "command.setAnchor": "Anker setzen",
   "command.showAnchors": "Anker anzeigen",
   "command.duplicateLine": "Zeile nach unten duplizieren",
-  "command.about": "Über Arduino+"
+  "command.about": "Über Arduino+",
+  "command.insertSnippet": "Snippet einfügen...",
+  "command.insertCommentAnchor": "Kommentar-Anker einfügen",
+  "command.showTodos": "TODOs anzeigen"
 }

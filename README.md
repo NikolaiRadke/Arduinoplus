@@ -7,8 +7,10 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
 
 * **Toggle Line Comments**: Quickly comment/uncomment lines with `//` - perfect for debugging!
 * **Duplicate Line**: Duplicates the selected line and inserts it below.
-* **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets.
-* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The sketch needs to be saved first. Alas, anchors are lost when the sketch is renamed.
+* **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets. Rename them, insert them with `Ctrl+Shift+V` from a list, and share them with import/export.
+* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. Anchors follow their line when you add or remove lines above.
+* **Comment Anchors**: Write `// @anchor WiFi Setup` into your code (or use *Insert Comment Anchor*). They live in the code, so they survive saving, renaming and sharing the sketch, and show up in the same anchor list.
+* **TODO List**: Shows all `TODO` and `FIXME` comments of the whole sketch (all tabs and `src/`). Click one to jump there.
 * **About Page**: Version, changelog and a button to uninstall Arduino+ completely.
 * 🌍 **Automatic language detection** based on IDE settings. Supported are: **en, de, es, fr, it**.
 
@@ -56,10 +58,28 @@ You can access all features through the right click context menu or with **Ctrl+
 | Duplicate Line Down | `Ctrl+Shift+D` |
 | Set Anchor | `Ctrl+Shift+B` |
 | Show Anchors | `Ctrl+Shift+A` |
+| Insert Snippet | `Ctrl+Shift+V` |
 
 On macOS use `Cmd` instead of `Ctrl`.
 
-The number of anchors in the current sketch is shown in the status bar. Click on it to jump to an anchor.
+The number of anchors in the current file is shown in the status bar. Click on it to jump to an anchor.
+
+### Anchors
+
+There are two kinds of anchors, both appear in the same list:
+
+| | 📍 Anchor | 🔖 Comment Anchor |
+|---|---|---|
+| Created with | *Set Anchor* | *Insert Comment Anchor* or `// @anchor Name` |
+| Stored in | `~/.arduinoplus/anchors.json` | your code |
+| Survives renaming the sketch | no | yes |
+| Visible for others | no | yes |
+
+Use 📍 anchors to keep your code clean, use 🔖 comment anchors for sketches you share or rename. In unsaved sketches only comment anchors survive saving.
+
+### Snippets
+
+Export writes all snippets into a JSON file. Import adds the snippets of such a file to your existing ones.
 
 ## Uninstallation
 

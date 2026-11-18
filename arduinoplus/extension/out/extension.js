@@ -10,10 +10,11 @@ const vscode = require('vscode');
 // Feature imports
 const toggleLineComment = require('./features/toggleLineComment');
 const { SnippetManager } = require('./features/snippetManager');
-const { showSnippetPanel, copyToSnippets, moveToSnippets } = require('./features/snippetPanel');
+const { showSnippetPanel, copyToSnippets, moveToSnippets, insertSnippetQuickPick } = require('./features/snippetPanel');
 const { AnchorManager } = require('./features/anchorManager');
 const { duplicateLine } = require('./features/duplicateLine');
 const AboutPanel = require('./features/aboutPanel');
+const { showTodoList } = require('./features/todoList');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
@@ -68,8 +69,20 @@ function activate(context) {
             handler: () => anchorManager.addAnchor()
         },
         {
+            name: 'arduinoplus.insertSnippet',
+            handler: () => insertSnippetQuickPick(snippetManager, t)
+        },
+        {
+            name: 'arduinoplus.insertCommentAnchor',
+            handler: () => anchorManager.insertCommentAnchor()
+        },
+        {
             name: 'arduinoplus.showAnchors',
             handler: () => anchorManager.showAnchorList()
+        },
+        {
+            name: 'arduinoplus.showTodos',
+            handler: () => showTodoList(t)
         },
         {
             name: 'arduinoplus.duplicateLine',

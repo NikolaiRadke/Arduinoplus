@@ -6,5 +6,8 @@
   "command.setAnchor": "Fijar anclaje",
   "command.showAnchors": "Mostrar anclajes",
   "command.duplicateLine": "Duplicar línea abajo",
-  "command.about": "Acerca de Arduino+"
+  "command.about": "Acerca de Arduino+",
+  "command.insertSnippet": "Insertar fragmento...",
+  "command.insertCommentAnchor": "Insertar anclaje de comentario",
+  "command.showTodos": "Mostrar TODOs"
 }

@@ -22,7 +22,9 @@
     "snippets",
     "anchors",
     "bookmarks",
-    "navigation"
+    "navigation",
+    "todo",
+    "fixme"
   ],
   "activationEvents": [
     "*"
@@ -77,6 +79,24 @@
         "title": "%command.about%",
         "category": "Arduino+",
         "icon": "$(info)"
+      },
+      {
+        "command": "arduinoplus.insertSnippet",
+        "title": "%command.insertSnippet%",
+        "category": "Arduino+",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "arduinoplus.insertCommentAnchor",
+        "title": "%command.insertCommentAnchor%",
+        "category": "Arduino+",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "arduinoplus.showTodos",
+        "title": "%command.showTodos%",
+        "category": "Arduino+",
+        "icon": "$(checklist)"
       }
     ],
     "keybindings": [
@@ -103,6 +123,12 @@
         "key": "ctrl+shift+d",
         "mac": "cmd+shift+d",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "arduinoplus.insertSnippet",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
@@ -126,16 +152,28 @@
           "when": "editorHasSelection"
         },
         {
-          "command": "arduinoplus.openSnippetPanel",
+          "command": "arduinoplus.insertSnippet",
           "group": "1_arduinoplus@5"
         },
         {
-          "command": "arduinoplus.setAnchor",
+          "command": "arduinoplus.openSnippetPanel",
           "group": "1_arduinoplus@6"
         },
         {
-          "command": "arduinoplus.showAnchors",
+          "command": "arduinoplus.setAnchor",
           "group": "1_arduinoplus@7"
+        },
+        {
+          "command": "arduinoplus.insertCommentAnchor",
+          "group": "1_arduinoplus@8"
+        },
+        {
+          "command": "arduinoplus.showAnchors",
+          "group": "1_arduinoplus@9"
+        },
+        {
+          "command": "arduinoplus.showTodos",
+          "group": "1_arduinoplus@10"
         },
         {
           "command": "arduinoplus.about",

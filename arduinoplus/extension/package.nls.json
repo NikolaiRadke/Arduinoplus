@@ -6,5 +6,8 @@
   "command.setAnchor": "Set Anchor",
   "command.showAnchors": "Show Anchors",
   "command.duplicateLine": "Duplicate Line Down",
-  "command.about": "About Arduino+"
+  "command.about": "About Arduino+",
+  "command.insertSnippet": "Insert Snippet...",
+  "command.insertCommentAnchor": "Insert Comment Anchor",
+  "command.showTodos": "Show TODOs"
 }

@@ -118,6 +118,52 @@ class SnippetManager {
     }
 
     /**
+     * Rename a snippet
+     * @param {number} id - Snippet ID
+     * @param {string} name - New name
+     */
+    renameSnippet(id, name) {
+        const snippet = this.snippets.find(s => s.id === id);
+        if (snippet && name) {
+            snippet.name = name;
+            this.saveSnippets();
+        }
+    }
+
+    /**
+     * Add snippets from an exported list, existing ones are kept
+     * @param {Array} list - [{name, content}]
+     * @returns {number} Number of imported snippets
+     */
+    importSnippets(list) {
+        if (!Array.isArray(list)) return 0;
+        let count = 0;
+        let nextId = Date.now();
+        for (const item of list) {
+            if (!item || typeof item.content !== 'string') continue;
+            this.snippets.push({
+                id: nextId++,
+                name: typeof item.name === 'string' && item.name ? item.name : `Snippet ${this.snippets.length + 1}`,
+                content: item.content,
+                created: typeof item.created === 'string' ? item.created : new Date().toISOString()
+            });
+            count++;
+        }
+        if (count > 0) {
+            this.saveSnippets();
+        }
+        return count;
+    }
+
+    /**
+     * Snippets in export format (without IDs)
+     * @returns {Array}
+     */
+    exportSnippets() {
+        return this.snippets.map(({ name, content, created }) => ({ name, content, created }));
+    }
+
+    /**
      * Update snippet content
      * @param {number} id - Snippet ID
      * @param {string} content - New content
