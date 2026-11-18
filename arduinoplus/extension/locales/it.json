@@ -93,7 +93,7 @@
   "lcdchar.threshold": "Soglia",
   "lcdchar.dither": "Retinatura (foto)",
   "lcdchar.invertImage": "Inverti immagine",
-  "lcdchar.originalSize": "Dimensione originale",
+  "lcdchar.originalSize": "Dimensione immagine",
   "lcdchar.closeImage": "Fatto",
   "lcdchar.importHint": "La soglia e le opzioni ridisegnano tutta l'immagine. Disegna a mano dopo aver cliccato su Fatto.",
   "lcdchar.auto": "Auto"

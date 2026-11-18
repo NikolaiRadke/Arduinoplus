@@ -93,7 +93,7 @@
   "lcdchar.threshold": "Schwellwert",
   "lcdchar.dither": "Rastern (Fotos)",
   "lcdchar.invertImage": "Bild invertieren",
-  "lcdchar.originalSize": "Originalgröße",
+  "lcdchar.originalSize": "Bildgröße",
   "lcdchar.closeImage": "Fertig",
   "lcdchar.importHint": "Schwellwert und Optionen zeichnen das ganze Bild neu. Male von Hand, nachdem du auf Fertig geklickt hast.",
   "lcdchar.auto": "Auto"

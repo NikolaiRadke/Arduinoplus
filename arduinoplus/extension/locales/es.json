@@ -93,7 +93,7 @@
   "lcdchar.threshold": "Umbral",
   "lcdchar.dither": "Tramado (fotos)",
   "lcdchar.invertImage": "Invertir imagen",
-  "lcdchar.originalSize": "Tamaño original",
+  "lcdchar.originalSize": "Tamaño de la imagen",
   "lcdchar.closeImage": "Listo",
   "lcdchar.importHint": "El umbral y las opciones vuelven a dibujar toda la imagen. Pinta a mano después de pulsar Listo.",
   "lcdchar.auto": "Auto"

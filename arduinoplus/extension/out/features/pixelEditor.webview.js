@@ -398,10 +398,15 @@
         pixels = toPixels(image.gray, image.transparent, width, height, threshold,
             document.getElementById('dither').checked, document.getElementById('invertImage').checked);
         const bitmap = mode === 'gfx' || mode === 'xbm';
-        document.getElementById('originalSize').style.display =
-            bitmap && source.width <= MAX_SIZE && source.height <= MAX_SIZE ? '' : 'none';
+        document.getElementById('originalSize').style.display = bitmap ? '' : 'none';
         drawAll();
         updateCode();
+    }
+
+    /** Image size, scaled down to fit into 128 x 128 */
+    function imageSize() {
+        const scale = Math.min(1, MAX_SIZE / source.width, MAX_SIZE / source.height);
+        return [Math.max(1, Math.round(source.width * scale)), Math.max(1, Math.round(source.height * scale))];
     }
 
     function closeImage() {
@@ -413,7 +418,7 @@
     document.getElementById('threshold').addEventListener('input', () => source && applyImage());
     document.getElementById('dither').addEventListener('change', () => source && applyImage());
     document.getElementById('invertImage').addEventListener('change', () => source && applyImage());
-    document.getElementById('originalSize').addEventListener('click', () => source && resize(source.width, source.height));
+    document.getElementById('originalSize').addEventListener('click', () => source && resize(...imageSize()));
     document.getElementById('closeImage').addEventListener('click', closeImage);
     document.getElementById('autoThreshold').addEventListener('click', () => source && autoAdjust());
 
@@ -424,6 +429,16 @@
             nameInput.value = name.replace(/[^A-Za-z0-9_]/g, '_');
             document.getElementById('imageName').textContent = name + ' (' + source.width + '×' + source.height + ')';
             document.getElementById('importPanel').style.display = 'block';
+            // An image needs a bitmap in its own size, LCD or matrix can be chosen afterwards
+            if (mode !== 'gfx' && mode !== 'xbm') {
+                mode = 'gfx';
+                document.querySelector('input[name=mode][value=gfx]').checked = true;
+                document.getElementById('sizeRow').style.display = '';
+            }
+            [width, height] = imageSize();
+            pixels = new Uint8Array(width * height);
+            widthInput.value = width;
+            heightInput.value = height;
             autoAdjust();
         };
         img.onerror = () => vscode.postMessage({ command: 'imageError', error: name });

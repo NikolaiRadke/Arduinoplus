@@ -93,7 +93,7 @@
   "lcdchar.threshold": "Threshold",
   "lcdchar.dither": "Dithering (photos)",
   "lcdchar.invertImage": "Invert image",
-  "lcdchar.originalSize": "Original size",
+  "lcdchar.originalSize": "Image size",
   "lcdchar.closeImage": "Done",
   "lcdchar.importHint": "Threshold and options redraw the whole image. Paint by hand once you click Done.",
   "lcdchar.auto": "Auto"
