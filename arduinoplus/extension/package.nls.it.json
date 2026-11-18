@@ -9,5 +9,6 @@
   "command.about": "Informazioni su Arduino+",
   "command.insertSnippet": "Inserisci snippet...",
   "command.insertCommentAnchor": "Inserisci ancora di commento",
-  "command.showTodos": "Mostra TODO"
+  "command.showTodos": "Mostra TODO",
+  "command.convertNumber": "Converti numero..."
 }

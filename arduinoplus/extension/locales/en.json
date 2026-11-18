@@ -58,5 +58,13 @@
   "snippet.exported": "{0} snippets exported to {1}",
   "snippet.exportFailed": "Export failed: {0}",
   "snippet.lines": "{0} lines",
-  "snippet.pickPlaceholder": "Insert snippet at cursor"
+  "snippet.pickPlaceholder": "Insert snippet at cursor",
+  "convert.noNumber": "No number at the cursor. Select a number or place the cursor on it.",
+  "convert.placeholder": "Convert {0}",
+  "convert.dec": "Decimal",
+  "convert.hex": "Hexadecimal",
+  "convert.bin": "Binary",
+  "convert.arduino": "Binary (Arduino)",
+  "convert.char": "Character",
+  "convert.bits": "{0} bit"
 }

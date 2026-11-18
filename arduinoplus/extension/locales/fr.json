@@ -58,5 +58,13 @@
   "snippet.exported": "{0} extraits exportés vers {1}",
   "snippet.exportFailed": "Échec de l'export : {0}",
   "snippet.lines": "{0} lignes",
-  "snippet.pickPlaceholder": "Insérer l'extrait au curseur"
+  "snippet.pickPlaceholder": "Insérer l'extrait au curseur",
+  "convert.noNumber": "Aucun nombre sous le curseur. Sélectionnez un nombre ou placez le curseur dessus.",
+  "convert.placeholder": "Convertir {0}",
+  "convert.dec": "Décimal",
+  "convert.hex": "Hexadécimal",
+  "convert.bin": "Binaire",
+  "convert.arduino": "Binaire (Arduino)",
+  "convert.char": "Caractère",
+  "convert.bits": "{0} bits"
 }

@@ -24,7 +24,10 @@
     "bookmarks",
     "navigation",
     "todo",
-    "fixme"
+    "fixme",
+    "hex",
+    "binary",
+    "converter"
   ],
   "activationEvents": [
     "*"
@@ -97,6 +100,12 @@
         "title": "%command.showTodos%",
         "category": "Arduino+",
         "icon": "$(checklist)"
+      },
+      {
+        "command": "arduinoplus.convertNumber",
+        "title": "%command.convertNumber%",
+        "category": "Arduino+",
+        "icon": "$(symbol-numeric)"
       }
     ],
     "keybindings": [
@@ -152,6 +161,10 @@
         {
           "command": "arduinoplus.duplicateLine",
           "group": "1_edit@2"
+        },
+        {
+          "command": "arduinoplus.convertNumber",
+          "group": "1_edit@3"
         },
         {
           "command": "arduinoplus.copyToSnippets",

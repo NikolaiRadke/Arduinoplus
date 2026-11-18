@@ -5,6 +5,7 @@
 ### Features
 - Added comment anchors: `// @anchor Name` in the code, shown in the anchor list
 - Added TODO list for TODO and FIXME comments of the whole sketch
+- Added number converter: decimal, hex, binary, Arduino binary and character
 - Snippets can be renamed, imported and exported
 - Added Insert Snippet (`Ctrl+Shift+V`) to pick a snippet from a list
 - Added About page with version, changelog and uninstall button

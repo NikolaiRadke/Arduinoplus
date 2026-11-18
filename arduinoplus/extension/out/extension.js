@@ -15,6 +15,7 @@ const { AnchorManager } = require('./features/anchorManager');
 const { duplicateLine } = require('./features/duplicateLine');
 const AboutPanel = require('./features/aboutPanel');
 const { showTodoList } = require('./features/todoList');
+const { convertNumber } = require('./features/numberConverter');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
@@ -79,6 +80,10 @@ function activate(context) {
         {
             name: 'arduinoplus.showAnchors',
             handler: () => anchorManager.showAnchorList()
+        },
+        {
+            name: 'arduinoplus.convertNumber',
+            handler: () => convertNumber(t)
         },
         {
             name: 'arduinoplus.showTodos',
