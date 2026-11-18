@@ -10,5 +10,6 @@
   "command.insertSnippet": "Insert Snippet...",
   "command.insertCommentAnchor": "Insert Comment Anchor",
   "command.showTodos": "Show TODOs",
-  "command.convertNumber": "Convert Number..."
+  "command.convertNumber": "Convert Number...",
+  "command.lcdCharEditor": "LCD Character Editor..."
 }

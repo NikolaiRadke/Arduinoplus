@@ -27,7 +27,9 @@
     "fixme",
     "hex",
     "binary",
-    "converter"
+    "converter",
+    "lcd",
+    "createChar"
   ],
   "activationEvents": [
     "*"
@@ -106,6 +108,12 @@
         "title": "%command.convertNumber%",
         "category": "Arduino+",
         "icon": "$(symbol-numeric)"
+      },
+      {
+        "command": "arduinoplus.lcdCharEditor",
+        "title": "%command.lcdCharEditor%",
+        "category": "Arduino+",
+        "icon": "$(symbol-color)"
       }
     ],
     "keybindings": [
@@ -199,6 +207,10 @@
         {
           "command": "arduinoplus.showTodos",
           "group": "4_tools@1"
+        },
+        {
+          "command": "arduinoplus.lcdCharEditor",
+          "group": "4_tools@2"
         },
         {
           "command": "arduinoplus.about",

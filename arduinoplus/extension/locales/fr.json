@@ -66,5 +66,16 @@
   "convert.bin": "Binaire",
   "convert.arduino": "Binaire (Arduino)",
   "convert.char": "Caractère",
-  "convert.bits": "{0} bits"
+  "convert.bits": "{0} bits",
+  "lcdchar.title": "Caractère LCD",
+  "lcdchar.name": "Nom",
+  "lcdchar.format": "Format",
+  "lcdchar.insert": "Insérer",
+  "lcdchar.invert": "Inverser",
+  "lcdchar.clear": "Effacer",
+  "lcdchar.shift": "Décaler",
+  "lcdchar.hint": "Cliquez ou glissez pour dessiner les pixels.",
+  "lcdchar.usage": "À utiliser avec lcd.createChar(0, nom) et lcd.write(byte(0)).",
+  "lcdchar.copied": "Caractère copié dans le presse-papiers !",
+  "lcdchar.inserted": "Caractère inséré !"
 }

@@ -16,12 +16,14 @@ const { duplicateLine } = require('./features/duplicateLine');
 const AboutPanel = require('./features/aboutPanel');
 const { showTodoList } = require('./features/todoList');
 const { convertNumber } = require('./features/numberConverter');
+const { LcdCharEditor } = require('./features/lcdCharEditor');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
 let snippetManager;
 let anchorManager;
 let aboutPanel;
+let lcdCharEditor;
 
 /**
  * Extension activation
@@ -39,6 +41,9 @@ function activate(context) {
 
     // About page with changelog and uninstaller
     aboutPanel = new AboutPanel(t);
+
+    // LCD custom character editor
+    lcdCharEditor = new LcdCharEditor(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -84,6 +89,10 @@ function activate(context) {
         {
             name: 'arduinoplus.convertNumber',
             handler: () => convertNumber(t)
+        },
+        {
+            name: 'arduinoplus.lcdCharEditor',
+            handler: () => lcdCharEditor.show()
         },
         {
             name: 'arduinoplus.showTodos',

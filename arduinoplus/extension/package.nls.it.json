@@ -10,5 +10,6 @@
   "command.insertSnippet": "Inserisci snippet...",
   "command.insertCommentAnchor": "Inserisci ancora di commento",
   "command.showTodos": "Mostra TODO",
-  "command.convertNumber": "Converti numero..."
+  "command.convertNumber": "Converti numero...",
+  "command.lcdCharEditor": "Editor caratteri LCD..."
 }
