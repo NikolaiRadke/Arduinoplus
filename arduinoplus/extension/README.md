@@ -50,7 +50,7 @@ Restart the Arduino IDE afterwards.
 
 ## Usage
 
-You can access all features through the right click context menu or with **Ctrl+Shift+P** → *Arduino+*.
+You can access all features through the right click context menu → *Arduino+*.
 
 | Feature | Shortcut |
 |---------|----------|
@@ -83,7 +83,7 @@ Export writes all snippets into a JSON file. Import adds the snippets of such a 
 
 ## Uninstallation
 
-Uninstall Arduino+ either with the **Extension Manager** or with the button on the **About Arduino+** page (context menu → *About Arduino+*). Both will remove:
+Uninstall Arduino+ either with the **Extension Manager** or with the button on the **About Arduino+** page (context menu → *Arduino+* → *About Arduino+*). Both will remove:
 
 - Your saved snippets and anchors: `~/.arduinoplus/`
 - The extension file: `~/.arduinoIDE/extensions/arduinoplus-X.X.X.vsix`

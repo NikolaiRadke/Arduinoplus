@@ -9,6 +9,7 @@
 - Added Insert Snippet (`Ctrl+Shift+V`) to pick a snippet from a list
 - Added About page with version, changelog and uninstall button
 - Added an icon
+- All features are grouped in an Arduino+ submenu of the context menu
 - Added translations: German, Spanish, French and Italian (English stays the default)
 - README and changelog are now part of the VSIX and are shown in the Extension Manager
 
