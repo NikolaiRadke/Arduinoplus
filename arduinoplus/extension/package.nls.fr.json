@@ -1,0 +1,10 @@
+{
+  "command.toggleLineComment": "// Basculer le commentaire de ligne",
+  "command.copyToSnippets": "Copier dans les extraits",
+  "command.moveToSnippets": "Déplacer dans les extraits",
+  "command.openSnippetPanel": "Ouvrir le panneau des extraits",
+  "command.setAnchor": "Placer une ancre",
+  "command.showAnchors": "Afficher les ancres",
+  "command.duplicateLine": "Dupliquer la ligne en dessous",
+  "command.about": "À propos d'Arduino+"
+}

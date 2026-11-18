@@ -2,7 +2,7 @@
   "name": "arduinoplus",
   "displayName": "Arduino+",
   "description": "Essential IDE helpers for Arduino development",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "MonsterMaker",
   "engines": {
     "vscode": "^1.60.0"
@@ -31,45 +31,51 @@
     "commands": [
       {
         "command": "arduinoplus.toggleLineComment",
-        "title": "// Toggle Line Comment",
+        "title": "%command.toggleLineComment%",
         "category": "Arduino+",
         "icon": "$(symbol-operator)"
       },
       {
         "command": "arduinoplus.copyToSnippets",
-        "title": "Copy to Snippets",
+        "title": "%command.copyToSnippets%",
         "category": "Arduino+",
         "icon": "$(files)"
       },
       {
         "command": "arduinoplus.moveToSnippets",
-        "title": "Move to Snippets",
+        "title": "%command.moveToSnippets%",
         "category": "Arduino+",
         "icon": "$(arrow-right)"
       },
       {
         "command": "arduinoplus.openSnippetPanel",
-        "title": "Open Snippet Panel",
+        "title": "%command.openSnippetPanel%",
         "category": "Arduino+",
         "icon": "$(list-unordered)"
       },
       {
         "command": "arduinoplus.setAnchor",
-        "title": "Set Anchor",
+        "title": "%command.setAnchor%",
         "category": "Arduino+",
         "icon": "$(bookmark)"
       },
       {
         "command": "arduinoplus.showAnchors",
-        "title": "Show Anchors",
+        "title": "%command.showAnchors%",
         "category": "Arduino+",
         "icon": "$(list-flat)"
       },
       {
         "command": "arduinoplus.duplicateLine",
-        "title": "Duplicate Line Down",
+        "title": "%command.duplicateLine%",
         "category": "Arduino+",
         "icon": "$(files)"
+      },
+      {
+        "command": "arduinoplus.about",
+        "title": "%command.about%",
+        "category": "Arduino+",
+        "icon": "$(info)"
       }
     ],
     "keybindings": [
@@ -129,6 +135,10 @@
         {
           "command": "arduinoplus.showAnchors",
           "group": "1_arduinoplus@7"
+        },
+        {
+          "command": "arduinoplus.about",
+          "group": "2_arduinoplus@1"
         }
       ]
     }

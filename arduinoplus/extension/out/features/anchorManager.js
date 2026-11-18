@@ -12,18 +12,24 @@ const vscode = require('vscode');
 
 const ARDUINOPLUS_DIR = path.join(os.homedir(), '.arduinoplus');
 const ANCHORS_FILE = path.join(ARDUINOPLUS_DIR, 'anchors.json');
+const MIGRATION_CHECK_INTERVAL = 10000; // 10 seconds
 
 /**
  * Anchor Manager - handles code anchors/bookmarks
  * Stores anchors per file in ~/.arduinoplus/anchors.json
  */
 class AnchorManager {
-    constructor() {
+    /**
+     * @param {Function} t - Translation function
+     */
+    constructor(t) {
+        this.t = t;
         this.anchors = {};
         this.ensureDirectory();
         this.loadAnchors();
         this.cleanupAnchors();
         this.statusBarItem = null;
+        this.migrationTimer = null;
         
         // Start periodic migration check
         this.startMigrationTimer();
@@ -89,7 +95,7 @@ class AnchorManager {
     async addAnchor() {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
-            vscode.window.showWarningMessage('No active editor');
+            vscode.window.showWarningMessage(this.t('common.noEditor'));
             return;
         }
 
@@ -97,13 +103,14 @@ class AnchorManager {
         
         // Warn if this is an unsaved temp file
         if (fileUri.includes('.arduinoIDE-unsaved')) {
+            const setAnyway = this.t('anchor.setAnyway');
             const choice = await vscode.window.showWarningMessage(
-                '⚠️ This sketch is not saved yet. Anchors will be lost when you save. Save the sketch first!',
-                'Set Anyway',
-                'Cancel'
+                '⚠️ ' + this.t('anchor.unsavedWarning'),
+                setAnyway,
+                this.t('common.cancel')
             );
             
-            if (choice !== 'Set Anyway') {
+            if (choice !== setAnyway) {
                 return;
             }
         }
@@ -113,8 +120,8 @@ class AnchorManager {
         
         // Ask for anchor name
         const name = await vscode.window.showInputBox({
-            prompt: 'Enter anchor name',
-            placeHolder: 'e.g., Main Loop, WiFi Setup',
+            prompt: this.t('anchor.namePrompt'),
+            placeHolder: this.t('anchor.namePlaceholder'),
             value: lineText.substring(0, 30)
         });
 
@@ -136,7 +143,7 @@ class AnchorManager {
         this.saveAnchors();
         this.updateStatusBar();
 
-        vscode.window.showInformationMessage(`Anchor "${name}" added at line ${line + 1}`);
+        vscode.window.showInformationMessage(this.t('anchor.added', name, line + 1));
     }
 
     /**
@@ -173,7 +180,7 @@ class AnchorManager {
                 vscode.TextEditorRevealType.InCenter
             );
         } catch (error) {
-            vscode.window.showErrorMessage(`Failed to jump to anchor: ${error.message}`);
+            vscode.window.showErrorMessage(this.t('anchor.jumpFailed', error.message));
         }
     }
 
@@ -201,7 +208,7 @@ class AnchorManager {
         const currentFileAnchors = this.getAnchorsForCurrentFile();
         
         if (currentFileAnchors.length === 0) {
-            vscode.window.showInformationMessage('No anchors in current file. Use "Set Anchor" to create one.');
+            vscode.window.showInformationMessage(this.t('anchor.noneInFile'));
             return;
         }
 
@@ -212,7 +219,7 @@ class AnchorManager {
         // Build QuickPick items for anchors
         const anchorItems = currentFileAnchors.map((anchor, index) => ({
             label: `📍 ${anchor.name}`,
-            description: `Line ${anchor.line + 1}`,
+            description: this.t('anchor.line', anchor.line + 1),
             detail: anchor.preview,
             fileUri: fileUri,
             line: anchor.line,
@@ -225,15 +232,15 @@ class AnchorManager {
             ...anchorItems,
             { label: '', kind: vscode.QuickPickItemKind.Separator },
             {
-                label: '🗑️ Delete an anchor...',
+                label: '🗑️ ' + this.t('anchor.deleteOption'),
                 description: '',
-                detail: 'Remove an anchor from this file',
+                detail: this.t('anchor.deleteOptionDetail'),
                 isDeleteOption: true
             }
         ];
 
         const selected = await vscode.window.showQuickPick(items, {
-            placeHolder: `Jump to anchor in ${fileName}`,
+            placeHolder: this.t('anchor.jumpPlaceholder', fileName),
             matchOnDescription: true,
             matchOnDetail: true
         });
@@ -258,18 +265,19 @@ class AnchorManager {
 
         const items = currentFileAnchors.map((anchor, index) => ({
             label: `🗑️ ${anchor.name}`,
-            description: `Line ${anchor.line + 1}`,
+            description: this.t('anchor.line', anchor.line + 1),
             detail: anchor.preview,
+            name: anchor.name,
             index: index
         }));
 
         const selected = await vscode.window.showQuickPick(items, {
-            placeHolder: `Delete anchor from ${fileName}`
+            placeHolder: this.t('anchor.deletePlaceholder', fileName)
         });
 
         if (selected) {
             this.deleteAnchor(fileUri, selected.index);
-            vscode.window.showInformationMessage(`Anchor "${selected.label.replace('🗑️ ', '')}" deleted`);
+            vscode.window.showInformationMessage(this.t('anchor.deleted', selected.name));
         }
     }
 
@@ -282,7 +290,7 @@ class AnchorManager {
             100
         );
         this.statusBarItem.command = 'arduinoplus.showAnchors';
-        this.statusBarItem.tooltip = 'Click to view anchors';
+        this.statusBarItem.tooltip = this.t('anchor.statusTooltip');
         context.subscriptions.push(this.statusBarItem);
         
         this.updateStatusBar();
@@ -297,7 +305,7 @@ class AnchorManager {
         const count = this.getAnchorsForCurrentFile().length;
         
         if (count > 0) {
-            this.statusBarItem.text = `📍 Anchors (${count})`;
+            this.statusBarItem.text = '📍 ' + this.t('anchor.status', count);
             this.statusBarItem.show();
         } else {
             this.statusBarItem.hide();
@@ -335,9 +343,19 @@ class AnchorManager {
      * Start periodic check for temp file migration
      */
     startMigrationTimer() {
-        setInterval(() => {
+        this.migrationTimer = setInterval(() => {
             this.checkAndMigrateTempAnchors();
-        }, 10000);
+        }, MIGRATION_CHECK_INTERVAL);
+    }
+
+    /**
+     * Stop periodic migration check
+     */
+    stopMigrationTimer() {
+        if (this.migrationTimer) {
+            clearInterval(this.migrationTimer);
+            this.migrationTimer = null;
+        }
     }
 
     /**

@@ -1,30 +1,34 @@
-![AI.duino](http://www.nikolairadke.de/aiduino/arduinoplus_back.png)
+![Arduino+](https://www.nikolairadke.de/aiduino/arduinoplus_back.png)
 # Arduino+ for a better Arduino IDE
 
-Arduino integrates features that are terribly missed in the IDE for a better coding experience.
+Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for a better coding experience.
 
 ## Features
 
 * **Toggle Line Comments**: Quickly comment/uncomment lines with `//` - perfect for debugging!
-* **Duplicate Line**: Duplicates the selected line and inserts it below.  
+* **Duplicate Line**: Duplicates the selected line and inserts it below.
 * **Snippet Manager**: An enhanced clipboard to keep and modify several code snippets.
-* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The sketch needs to be saved fist. Alas, anchors are lost when the sketch is renamed.
+* **Sketch Anchors**: Set an anchor and jump anytime to the desired position. The sketch needs to be saved first. Alas, anchors are lost when the sketch is renamed.
+* **About Page**: Version, changelog and a button to uninstall Arduino+ completely.
+* 🌍 **Automatic language detection** based on IDE settings. Supported are: **en, de, es, fr, it**.
 
 ### Failed Features
 
-Arduino IDE is not VS Code. A lot of functions are disabled but not documented. It's hard to develop an extension so sometimes ideas will fail.  
+Arduino IDE is not VS Code. A lot of functions are disabled but not documented. It's hard to develop an extension so sometimes ideas will fail.
 * *Trigger Reset by Command:* Requires unavailable Python dependencies and doesn't work for ESP32-CAM.
 * *Mousewheel Zoom:* Extension API lacks mouse wheel event access.
-* *Compiler Flag Manager:*  System files get overwritten on board updates.
+* *Compiler Flag Manager:* System files get overwritten on board updates.
 * *Serial Monitor Search:* Extension API has no access to Serial Monitor.
 
 ## Screenshot
-![Arduino+](http://www.nikolairadke.de/aiduino/arduinoplus_screenshot.png)
+![Arduino+](https://www.nikolairadke.de/aiduino/arduinoplus_screenshot.png)
 
 ## Installation
 
-You need the VSIX file **arduinoplus-X.X.X.vsix** in the same folder with the installer. The installer will install the plugin in your home folder. 
-  
+The easiest way is the **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)**: click 📥 **Install** and choose the file **arduinoplus-X.X.X.vsix**. It also tells you when an update is available.
+
+Without the Extension Manager you need the VSIX file **arduinoplus-X.X.X.vsix** in the same folder with the installer. The installer will install the plugin in your home folder.
+
 #### Windows
 Run ``` install_arduinoplus_windows.bat ``` as administrator
 
@@ -39,13 +43,38 @@ chmod +x install_arduinoplus_linux.sh
 chmod +x install_arduinoplus_macos.sh
 ./install_arduinoplus_macos.sh
 ```
+
+Restart the Arduino IDE afterwards.
+
 ## Usage
-You can access all feaures through the right click context menu.  
+
+You can access all features through the right click context menu or with **Ctrl+Shift+P** → *Arduino+*.
+
+| Feature | Shortcut |
+|---------|----------|
+| Toggle Line Comment | `Ctrl+/` |
+| Duplicate Line Down | `Ctrl+Shift+D` |
+| Set Anchor | `Ctrl+Shift+B` |
+| Show Anchors | `Ctrl+Shift+A` |
+
+On macOS use `Cmd` instead of `Ctrl`.
+
+The number of anchors in the current sketch is shown in the status bar. Click on it to jump to an anchor.
+
+## Uninstallation
+
+Uninstall Arduino+ either with the **Extension Manager** or with the button on the **About Arduino+** page (context menu → *About Arduino+*). Both will remove:
+
+- Your saved snippets and anchors: `~/.arduinoplus/`
+- The extension file: `~/.arduinoIDE/extensions/arduinoplus-X.X.X.vsix`
+- The deployed extension: `~/.arduinoIDE/deployedPlugins/arduinoplus/`
+
+Before anything is deleted, you will be asked twice and see the list of files. Restart the Arduino IDE afterwards.
 
 ## Related Projects
 
 - **[AI.duino](https://github.com/NikolaiRadke/AI.duino)** - AI-powered assistance for Arduino IDE.
-- **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)** -  Manage your Arduino IDE 2.X extensions.
+- **[Extension Manager](https://github.com/NikolaiRadke/Extension-Manager)** - Manage your Arduino IDE 2.x extensions.
 
 ## 💙 Support Arduino+
 
@@ -55,5 +84,3 @@ Arduino+ is free and open source. If it saved your day, consider buying me a cof
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/nikolairadke)
 
 Every contribution helps keep this project alive! 🚀
-
-

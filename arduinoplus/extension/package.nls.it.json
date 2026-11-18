@@ -1,0 +1,10 @@
+{
+  "command.toggleLineComment": "// Commenta/decommenta riga",
+  "command.copyToSnippets": "Copia negli snippet",
+  "command.moveToSnippets": "Sposta negli snippet",
+  "command.openSnippetPanel": "Apri pannello snippet",
+  "command.setAnchor": "Imposta ancora",
+  "command.showAnchors": "Mostra ancore",
+  "command.duplicateLine": "Duplica riga sotto",
+  "command.about": "Informazioni su Arduino+"
+}

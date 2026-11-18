@@ -8,24 +8,22 @@
 const vscode = require('vscode');
 
 let snippetPanel = null;
-let snippetManager = null;
 
 /**
  * Show or create the snippet panel
  * @param {object} manager - SnippetManager instance
+ * @param {Function} t - Translation function
  */
-function showSnippetPanel(manager) {
-    snippetManager = manager;
-    
+function showSnippetPanel(manager, t) {
     if (snippetPanel) {
         snippetPanel.reveal(vscode.ViewColumn.Two);
-        updatePanelContent();
+        updatePanelContent(manager, t);
         return;
     }
 
     snippetPanel = vscode.window.createWebviewPanel(
         'arduinoplusSnippets',
-        'Arduino+ Snippets',
+        t('snippet.panelTitle'),
         vscode.ViewColumn.Two,
         {
             enableScripts: true,
@@ -33,38 +31,38 @@ function showSnippetPanel(manager) {
         }
     );
 
-    updatePanelContent();
+    updatePanelContent(manager, t);
 
     snippetPanel.onDidDispose(() => {
         snippetPanel = null;
     });
 
     snippetPanel.webview.onDidReceiveMessage(message => {
-        handlePanelMessage(message);
+        handlePanelMessage(message, manager, t);
     });
 }
 
 /**
  * Update panel HTML content
  */
-function updatePanelContent() {
+function updatePanelContent(manager, t) {
     if (!snippetPanel) return;
-    const snippets = snippetManager.getAllSnippets();
-    snippetPanel.webview.html = generatePanelHTML(snippets);
+    const snippets = manager.getAllSnippets();
+    snippetPanel.webview.html = generatePanelHTML(snippets, t);
 }
 
 /**
  * Generate HTML for the panel
  */
-function generatePanelHTML(snippets) {
+function generatePanelHTML(snippets, t) {
     const snippetItems = snippets.map(snippet => `
         <div class="snippet-item">
             <div class="snippet-header">${escapeHtml(snippet.name)}</div>
             <textarea class="snippet-content" data-id="${snippet.id}">${escapeHtml(snippet.content)}</textarea>
             <div class="snippet-buttons">
-                <button onclick="copySnippet(${snippet.id})">Copy</button>
-                <button onclick="insertSnippet(${snippet.id})">Insert</button>
-                <button onclick="deleteSnippet(${snippet.id})">Delete</button>
+                <button onclick="copySnippet(${snippet.id})">${escapeHtml(t('snippet.copy'))}</button>
+                <button onclick="insertSnippet(${snippet.id})">${escapeHtml(t('snippet.insert'))}</button>
+                <button onclick="deleteSnippet(${snippet.id})">${escapeHtml(t('snippet.delete'))}</button>
             </div>
         </div>
     `).join('');
@@ -127,9 +125,9 @@ function generatePanelHTML(snippets) {
         </style>
     </head>
     <body>
-        <h2>Code Snippets</h2>
+        <h2>${escapeHtml(t('snippet.heading'))}</h2>
         ${snippets.length === 0 ? 
-            '<div class="empty-state">No snippets yet. Select code and use "Copy to Snippets" from the context menu.</div>' 
+            `<div class="empty-state">${escapeHtml(t('snippet.empty'))}</div>` 
             : snippetItems
         }
         <script>
@@ -163,19 +161,19 @@ function generatePanelHTML(snippets) {
 /**
  * Handle messages from webview
  */
-function handlePanelMessage(message) {
+function handlePanelMessage(message, manager, t) {
     switch (message.command) {
         case 'copy':
-            copySnippetToClipboard(message.id);
+            copySnippetToClipboard(message.id, manager, t);
             break;
         case 'insert':
-            insertSnippetToEditor(message.id);
+            insertSnippetToEditor(message.id, manager, t);
             break;
         case 'delete':
-            deleteSnippetById(message.id);
+            deleteSnippetById(message.id, manager, t);
             break;
         case 'update':
-            snippetManager.updateSnippet(message.id, message.content);
+            manager.updateSnippet(message.id, message.content);
             break;
     }
 }
@@ -183,24 +181,24 @@ function handlePanelMessage(message) {
 /**
  * Copy snippet to system clipboard
  */
-async function copySnippetToClipboard(id) {
-    const snippet = snippetManager.getAllSnippets().find(s => s.id === id);
+async function copySnippetToClipboard(id, manager, t) {
+    const snippet = manager.getAllSnippets().find(s => s.id === id);
     if (snippet) {
         await vscode.env.clipboard.writeText(snippet.content);
-        vscode.window.showInformationMessage('Snippet copied to clipboard!');
+        vscode.window.showInformationMessage(t('snippet.copied'));
     }
 }
 
 /**
  * Insert snippet into active editor
  */
-async function insertSnippetToEditor(id) {
-    const snippet = snippetManager.getAllSnippets().find(s => s.id === id);
+async function insertSnippetToEditor(id, manager, t) {
+    const snippet = manager.getAllSnippets().find(s => s.id === id);
     if (!snippet) return;
     
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
-        vscode.window.showWarningMessage('No active editor');
+        vscode.window.showWarningMessage(t('common.noEditor'));
         return;
     }
     
@@ -212,30 +210,25 @@ async function insertSnippetToEditor(id) {
         }
     });
     
-    vscode.window.showInformationMessage('Snippet inserted!');
+    vscode.window.showInformationMessage(t('snippet.inserted'));
 }
 
 /**
  * Delete snippet by ID
  */
-function deleteSnippetById(id) {
-    snippetManager.deleteSnippet(id);
-    updatePanelContent();
-    vscode.window.showInformationMessage('Snippet deleted!');
+function deleteSnippetById(id, manager, t) {
+    manager.deleteSnippet(id);
+    updatePanelContent(manager, t);
+    vscode.window.showInformationMessage(t('snippet.deleted'));
 }
 
 /**
  * Copy selected text to snippets
  */
-async function copyToSnippets(manager) {
-    // Initialize manager if needed
-    if (!snippetManager && manager) {
-        snippetManager = manager;
-    }
-    
+async function copyToSnippets(manager, t) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
-        vscode.window.showWarningMessage('No active editor');
+        vscode.window.showWarningMessage(t('common.noEditor'));
         return;
     }
 
@@ -243,27 +236,22 @@ async function copyToSnippets(manager) {
     const text = editor.document.getText(selection);
 
     if (!text) {
-        vscode.window.showWarningMessage('No text selected');
+        vscode.window.showWarningMessage(t('snippet.noSelection'));
         return;
     }
 
-    snippetManager.addSnippet(text);
-    showSnippetPanel(snippetManager);
-    vscode.window.showInformationMessage('Added to snippets!');
+    manager.addSnippet(text);
+    showSnippetPanel(manager, t);
+    vscode.window.showInformationMessage(t('snippet.added'));
 }
 
 /**
  * Move selected text to snippets (copy + delete original)
  */
-async function moveToSnippets(manager) {
-    // Initialize manager if needed
-    if (!snippetManager && manager) {
-        snippetManager = manager;
-    }
-    
+async function moveToSnippets(manager, t) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
-        vscode.window.showWarningMessage('No active editor');
+        vscode.window.showWarningMessage(t('common.noEditor'));
         return;
     }
 
@@ -271,7 +259,7 @@ async function moveToSnippets(manager) {
     let text = editor.document.getText(selection);
 
     if (!text) {
-        vscode.window.showWarningMessage('No text selected');
+        vscode.window.showWarningMessage(t('snippet.noSelection'));
         return;
     }
 
@@ -288,7 +276,7 @@ async function moveToSnippets(manager) {
         text = text + '\n';
     }
     
-    snippetManager.addSnippet(text);
+    manager.addSnippet(text);
     
     await editor.edit(editBuilder => {
         if (isFullLines) {
@@ -303,8 +291,8 @@ async function moveToSnippets(manager) {
         }
     });
     
-    showSnippetPanel(snippetManager);
-    vscode.window.showInformationMessage('Moved to snippets!');
+    showSnippetPanel(manager, t);
+    vscode.window.showInformationMessage(t('snippet.moved'));
 }
 
 /**

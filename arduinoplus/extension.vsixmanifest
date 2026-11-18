@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Language="en-US" Id="arduinoplus" Version="1.0.0" Publisher="Monster Maker"/>
+    <Identity Language="en-US" Id="arduinoplus" Version="1.1.0" Publisher="MonsterMaker"/>
     <DisplayName>Arduino+</DisplayName>
-    <Description xml:space="preserve">AI-powered assistance for Arduino with multi-language support</Description>
+    <Description xml:space="preserve">Essential IDE helpers for Arduino development</Description>
+    <Tags>arduino,arduinoIDE,comment,toggle,editor,tools,snippets,anchors,bookmarks,navigation</Tags>
+    <Categories>Other,Programming Languages</Categories>
+    <GalleryFlags>Public</GalleryFlags>
+    <Properties>
+      <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.60.0"/>
+      <Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace"/>
+      <Property Id="Microsoft.VisualStudio.Code.ExecutesCode" Value="true"/>
+      <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/NikolaiRadke/Arduinoplus.git"/>
+      <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/NikolaiRadke/Arduinoplus.git"/>
+      <Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/NikolaiRadke/Arduinoplus/issues"/>
+      <Property Id="Microsoft.VisualStudio.Services.Links.Learn" Value="https://github.com/NikolaiRadke/Arduinoplus#readme"/>
+      <Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true"/>
+      <Property Id="Microsoft.VisualStudio.Services.Content.Pricing" Value="Free"/>
+    </Properties>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Code"/>
   </Installation>
+  <Dependencies/>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/>
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true"/>
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true"/>
   </Assets>
 </PackageManifest>
