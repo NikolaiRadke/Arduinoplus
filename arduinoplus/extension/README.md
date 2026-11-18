@@ -18,6 +18,8 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
 
   Select an existing array before opening the editor to change it, type and size are detected automatically.
 
+  Zoom with the −/+ buttons or Ctrl + mouse wheel, large bitmaps can be scrolled.
+
   **Import images** (PNG, JPG, GIF, BMP, WebP): the editor switches to a bitmap in the size of the image (scaled down to 128×128 if larger) and turns it into pixels. Choose a smaller size or LCD/matrix afterwards, the image is fitted again. The threshold is chosen automatically (the motif lights up), you can adjust it, use dithering for photos and invert. Touch it up by hand afterwards.
 * **TODO List**: Shows all `TODO` and `FIXME` comments of the whole sketch (all tabs and `src/`). Click one to jump there.
 * **About Page**: Version, changelog and a button to uninstall Arduino+ completely.

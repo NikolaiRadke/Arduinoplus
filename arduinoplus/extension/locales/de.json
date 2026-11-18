@@ -96,5 +96,9 @@
   "lcdchar.originalSize": "Bildgröße",
   "lcdchar.closeImage": "Fertig",
   "lcdchar.importHint": "Schwellwert und Optionen zeichnen das ganze Bild neu. Male von Hand, nachdem du auf Fertig geklickt hast.",
-  "lcdchar.auto": "Auto"
+  "lcdchar.auto": "Auto",
+  "lcdchar.zoomIn": "Vergrößern",
+  "lcdchar.zoomOut": "Verkleinern",
+  "lcdchar.zoomFit": "Einpassen",
+  "lcdchar.zoomHint": "Strg + Mausrad"
 }

@@ -96,5 +96,9 @@
   "lcdchar.originalSize": "Dimensione immagine",
   "lcdchar.closeImage": "Fatto",
   "lcdchar.importHint": "La soglia e le opzioni ridisegnano tutta l'immagine. Disegna a mano dopo aver cliccato su Fatto.",
-  "lcdchar.auto": "Auto"
+  "lcdchar.auto": "Auto",
+  "lcdchar.zoomIn": "Ingrandisci",
+  "lcdchar.zoomOut": "Riduci",
+  "lcdchar.zoomFit": "Adatta",
+  "lcdchar.zoomHint": "Ctrl + rotellina"
 }

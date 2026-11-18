@@ -264,6 +264,8 @@ class PixelEditor {
     body { color: var(--vscode-foreground); background: var(--vscode-editor-background); font-family: var(--vscode-font-family); font-size: var(--vscode-font-size); padding: 16px; user-select: none; }
     .layout { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
     canvas { border-radius: 4px; cursor: crosshair; display: block; }
+    #canvasWrap { overflow: auto; max-width: calc(100vw - 40px); max-height: 70vh; width: max-content; }
+    #zoomValue { min-width: 44px; text-align: center; font-family: var(--vscode-editor-font-family); font-size: 12px; color: var(--vscode-descriptionForeground); }
     .tools { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
     .controls { min-width: 300px; flex: 1; }
     .controls label.title { display: block; margin: 12px 0 4px 0; color: var(--vscode-descriptionForeground); }
@@ -290,7 +292,14 @@ class PixelEditor {
 <body>
 <div class="layout">
     <div>
-        <canvas id="canvas"></canvas>
+        <div id="canvasWrap"><canvas id="canvas"></canvas></div>
+        <div class="tools">
+            <button class="secondary small" id="zoomOut" title="${esc(t('lcdchar.zoomOut'))}">−</button>
+            <span id="zoomValue"></span>
+            <button class="secondary small" id="zoomIn" title="${esc(t('lcdchar.zoomIn'))}">+</button>
+            <button class="secondary small" id="zoomFit">${esc(t('lcdchar.zoomFit'))}</button>
+            <span class="hint" style="margin-top: 0">${esc(t('lcdchar.zoomHint'))}</span>
+        </div>
         <div class="tools">
             <button class="secondary" data-shift="up" title="${esc(t('lcdchar.shift'))}">↑</button>
             <button class="secondary" data-shift="down" title="${esc(t('lcdchar.shift'))}">↓</button>

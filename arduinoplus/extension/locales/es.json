@@ -96,5 +96,9 @@
   "lcdchar.originalSize": "Tamaño de la imagen",
   "lcdchar.closeImage": "Listo",
   "lcdchar.importHint": "El umbral y las opciones vuelven a dibujar toda la imagen. Pinta a mano después de pulsar Listo.",
-  "lcdchar.auto": "Auto"
+  "lcdchar.auto": "Auto",
+  "lcdchar.zoomIn": "Acercar",
+  "lcdchar.zoomOut": "Alejar",
+  "lcdchar.zoomFit": "Ajustar",
+  "lcdchar.zoomHint": "Ctrl + rueda del ratón"
 }

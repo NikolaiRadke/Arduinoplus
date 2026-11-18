@@ -26,6 +26,8 @@
     let paintValue = null;
     let codeScheduled = false;
     let source = null; // Imported image: { img, width, height }
+    let zoom = null; // Pixel size set by the user, null = fit into the window
+    const ZOOM_STEPS = [2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64];
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -37,6 +39,7 @@
     // --- Drawing ---
 
     function cellSize() {
+        if (zoom) return zoom;
         const available = Math.min(512, Math.max(160, window.innerWidth - 380));
         return Math.max(3, Math.min(32, Math.floor(available / Math.max(width, height))));
     }
@@ -60,6 +63,7 @@
 
     function drawAll() {
         cell = cellSize();
+        document.getElementById('zoomValue').textContent = cell + ' px';
         canvas.width = width * cell + 12;
         canvas.height = height * cell + 12;
         ctx.fillStyle = COLORS[mode].bg;
@@ -97,7 +101,47 @@
         if (paintValue !== null) paint(event);
     });
     window.addEventListener('mouseup', () => { paintValue = null; });
-    window.addEventListener('resize', drawAll);
+    window.addEventListener('resize', () => { if (!zoom) drawAll(); });
+
+    // --- Zoom ---
+
+    const wrap = document.getElementById('canvasWrap');
+
+    /**
+     * Zoom one step in or out; the point under the mouse stays in place
+     * @param {number} direction - 1 = in, -1 = out
+     * @param {MouseEvent} [event]
+     */
+    function zoomStep(direction, event) {
+        const current = cell;
+        let next = direction > 0
+            ? ZOOM_STEPS.find(step => step > current)
+            : [...ZOOM_STEPS].reverse().find(step => step < current);
+        if (!next) return;
+
+        const box = wrap.getBoundingClientRect();
+        const mouseX = event ? event.clientX - box.left : wrap.clientWidth / 2;
+        const mouseY = event ? event.clientY - box.top : wrap.clientHeight / 2;
+        const fx = (wrap.scrollLeft + mouseX - 6) / current;
+        const fy = (wrap.scrollTop + mouseY - 6) / current;
+
+        zoom = next;
+        drawAll();
+        wrap.scrollLeft = 6 + fx * next - mouseX;
+        wrap.scrollTop = 6 + fy * next - mouseY;
+    }
+
+    document.getElementById('zoomIn').addEventListener('click', () => zoomStep(1));
+    document.getElementById('zoomOut').addEventListener('click', () => zoomStep(-1));
+    document.getElementById('zoomFit').addEventListener('click', () => {
+        zoom = null;
+        drawAll();
+    });
+    wrap.addEventListener('wheel', event => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomStep(event.deltaY < 0 ? 1 : -1, event);
+    }, { passive: false });
 
     // --- Code generation ---
 
@@ -191,6 +235,7 @@
         width = newWidth;
         height = newHeight;
         pixels = next;
+        zoom = null;
         widthInput.value = width;
         heightInput.value = height;
         if (source) {

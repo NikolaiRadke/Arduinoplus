@@ -96,5 +96,9 @@
   "lcdchar.originalSize": "Taille de l'image",
   "lcdchar.closeImage": "Terminé",
   "lcdchar.importHint": "Le seuil et les options redessinent toute l'image. Dessinez à la main après avoir cliqué sur Terminé.",
-  "lcdchar.auto": "Auto"
+  "lcdchar.auto": "Auto",
+  "lcdchar.zoomIn": "Zoom avant",
+  "lcdchar.zoomOut": "Zoom arrière",
+  "lcdchar.zoomFit": "Ajuster",
+  "lcdchar.zoomHint": "Ctrl + molette"
 }

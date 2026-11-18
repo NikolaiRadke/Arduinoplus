@@ -96,5 +96,9 @@
   "lcdchar.originalSize": "Image size",
   "lcdchar.closeImage": "Done",
   "lcdchar.importHint": "Threshold and options redraw the whole image. Paint by hand once you click Done.",
-  "lcdchar.auto": "Auto"
+  "lcdchar.auto": "Auto",
+  "lcdchar.zoomIn": "Zoom in",
+  "lcdchar.zoomOut": "Zoom out",
+  "lcdchar.zoomFit": "Fit",
+  "lcdchar.zoomHint": "Ctrl + mouse wheel"
 }
