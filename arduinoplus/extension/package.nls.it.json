@@ -11,5 +11,5 @@
   "command.insertCommentAnchor": "Inserisci ancora di commento",
   "command.showTodos": "Mostra TODO",
   "command.convertNumber": "Converti numero...",
-  "command.lcdCharEditor": "Editor caratteri (LCD, matrice, OLED)..."
+  "command.lcdCharEditor": "Editor di pixel (LCD, matrice, bitmap)..."
 }

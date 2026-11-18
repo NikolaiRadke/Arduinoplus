@@ -16,14 +16,14 @@ const { duplicateLine } = require('./features/duplicateLine');
 const AboutPanel = require('./features/aboutPanel');
 const { showTodoList } = require('./features/todoList');
 const { convertNumber } = require('./features/numberConverter');
-const { LcdCharEditor } = require('./features/lcdCharEditor');
+const { PixelEditor } = require('./features/pixelEditor');
 const { loadTranslations, t } = require('./utils/localeLoader');
 
 // Global manager instances
 let snippetManager;
 let anchorManager;
 let aboutPanel;
-let lcdCharEditor;
+let pixelEditor;
 
 /**
  * Extension activation
@@ -42,8 +42,8 @@ function activate(context) {
     // About page with changelog and uninstaller
     aboutPanel = new AboutPanel(t);
 
-    // LCD custom character editor
-    lcdCharEditor = new LcdCharEditor(t);
+    // Pixel editor for LCD characters, LED matrices and bitmaps
+    pixelEditor = new PixelEditor(t);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -92,7 +92,7 @@ function activate(context) {
         },
         {
             name: 'arduinoplus.lcdCharEditor',
-            handler: () => lcdCharEditor.show()
+            handler: () => pixelEditor.show()
         },
         {
             name: 'arduinoplus.showTodos',

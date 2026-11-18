@@ -1,0 +1,270 @@
+/*
+ * Arduino+ - Pixel Editor (webview script)
+ * Copyright 2026 Monster Maker
+ *
+ * Licensed under the Apache License, Version 2.0
+ *
+ * CONFIG is set by pixelEditor.js before this script runs.
+ */
+
+(function () {
+    const vscode = acquireVsCodeApi();
+    const MAX_SIZE = 128;
+    const FIXED = { lcd: [5, 8], matrix: [8, 8] };
+    const COLORS = {
+        lcd: { bg: '#1b3d1b', off: '#2f5f2f', on: '#c8f7c8' },
+        matrix: { bg: '#111111', off: '#3a1010', on: '#ff3b30' },
+        gfx: { bg: '#000000', off: '#101820', on: '#7fd4ff' },
+        xbm: { bg: '#000000', off: '#101820', on: '#7fd4ff' }
+    };
+
+    let mode = 'lcd';
+    let width = 5;
+    let height = 8;
+    let pixels = new Uint8Array(width * height);
+    let cell = 32;
+    let paintValue = null;
+    let codeScheduled = false;
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const nameInput = document.getElementById('name');
+    const widthInput = document.getElementById('width');
+    const heightInput = document.getElementById('height');
+    const codeBox = document.getElementById('code');
+
+    // --- Drawing ---
+
+    function cellSize() {
+        const available = Math.min(512, Math.max(160, window.innerWidth - 380));
+        return Math.max(3, Math.min(32, Math.floor(available / Math.max(width, height))));
+    }
+
+    function drawCell(x, y) {
+        const colors = COLORS[mode];
+        const gap = cell >= 8 ? 2 : (cell >= 5 ? 1 : 0);
+        const px = 6 + x * cell;
+        const py = 6 + y * cell;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(px, py, cell, cell);
+        ctx.fillStyle = pixels[y * width + x] ? colors.on : colors.off;
+        if (mode === 'matrix') {
+            ctx.beginPath();
+            ctx.arc(px + cell / 2, py + cell / 2, cell / 2 - gap, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            ctx.fillRect(px + gap / 2, py + gap / 2, cell - gap, cell - gap);
+        }
+    }
+
+    function drawAll() {
+        cell = cellSize();
+        canvas.width = width * cell + 12;
+        canvas.height = height * cell + 12;
+        ctx.fillStyle = COLORS[mode].bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) drawCell(x, y);
+        }
+    }
+
+    function cellAt(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor((event.clientX - rect.left - 6) / cell);
+        const y = Math.floor((event.clientY - rect.top - 6) / cell);
+        return x >= 0 && y >= 0 && x < width && y < height ? { x, y } : null;
+    }
+
+    function paint(event) {
+        const pos = cellAt(event);
+        if (!pos) return;
+        const index = pos.y * width + pos.x;
+        if (pixels[index] === paintValue) return;
+        pixels[index] = paintValue;
+        drawCell(pos.x, pos.y);
+        scheduleCode();
+    }
+
+    canvas.addEventListener('mousedown', event => {
+        const pos = cellAt(event);
+        if (!pos) return;
+        paintValue = pixels[pos.y * width + pos.x] ? 0 : 1;
+        paint(event);
+        event.preventDefault();
+    });
+    canvas.addEventListener('mousemove', event => {
+        if (paintValue !== null) paint(event);
+    });
+    window.addEventListener('mouseup', () => { paintValue = null; });
+    window.addEventListener('resize', drawAll);
+
+    // --- Code generation ---
+
+    function formatByte(value, bits) {
+        const f = document.querySelector('input[name=format]:checked').value;
+        if (f === 'hex') return '0x' + value.toString(16).toUpperCase().padStart(2, '0');
+        const bin = value.toString(2).padStart(bits, '0');
+        return f === 'bin' ? '0b' + bin : 'B' + bin;
+    }
+
+    function safeName() {
+        return (nameInput.value.trim().replace(/[^A-Za-z0-9_]/g, '_') || 'image').replace(/^(\d)/, '_$1');
+    }
+
+    /** Bytes of one row: MSB = left pixel (GFX, matrix), LSB = left pixel (XBM) */
+    function rowBytes(y, lsbFirst) {
+        const bytes = [];
+        for (let b = 0; b < Math.ceil(width / 8); b++) {
+            let value = 0;
+            for (let i = 0; i < 8; i++) {
+                const x = b * 8 + i;
+                if (x < width && pixels[y * width + x]) value |= lsbFirst ? (1 << i) : (0x80 >> i);
+            }
+            bytes.push(value);
+        }
+        return bytes;
+    }
+
+    function bytesBlock(lsbFirst) {
+        const perRow = Math.ceil(width / 8);
+        const perLine = perRow <= 16 ? perRow * Math.max(1, Math.floor(16 / perRow)) : 16;
+        const all = [];
+        for (let y = 0; y < height; y++) all.push(...rowBytes(y, lsbFirst));
+        const lines = [];
+        for (let i = 0; i < all.length; i += perLine) {
+            lines.push('  ' + all.slice(i, i + perLine).map(v => formatByte(v, 8)).join(', '));
+        }
+        return lines.join(',\n');
+    }
+
+    function code() {
+        const name = safeName();
+        if (mode === 'lcd') {
+            // HD44780: the lower 5 bits of each byte, bit 4 = left pixel
+            const lines = [];
+            for (let y = 0; y < 8; y++) {
+                let value = 0;
+                for (let x = 0; x < 5; x++) if (pixels[y * 5 + x]) value |= 0x10 >> x;
+                lines.push('  ' + formatByte(value, 5));
+            }
+            return 'byte ' + name + '[8] = {\n' + lines.join(',\n') + '\n};\n';
+        }
+        if (mode === 'matrix') {
+            const lines = [];
+            for (let y = 0; y < 8; y++) lines.push('  ' + formatByte(rowBytes(y, false)[0], 8));
+            return 'byte ' + name + '[8] = {\n' + lines.join(',\n') + '\n};\n';
+        }
+        if (mode === 'xbm') {
+            return '#define ' + name + '_width ' + width + '\n#define ' + name + '_height ' + height + '\n' +
+                'static const unsigned char ' + name + '_bits[] U8X8_PROGMEM = {\n' + bytesBlock(true) + '\n};\n';
+        }
+        return '// ' + width + 'x' + height + '\nconst uint8_t ' + name + '[] PROGMEM = {\n' + bytesBlock(false) + '\n};\n';
+    }
+
+    function updateCode() {
+        codeScheduled = false;
+        codeBox.textContent = code();
+        const name = safeName();
+        document.getElementById('usage').textContent = CONFIG.usage[mode]
+            .split('{0}').join(mode === 'xbm' ? name + '_width, ' + name + '_height, ' + name + '_bits' : name)
+            .split('{1}').join(width)
+            .split('{2}').join(height);
+    }
+
+    function scheduleCode() {
+        if (codeScheduled) return;
+        codeScheduled = true;
+        requestAnimationFrame(updateCode);
+    }
+
+    // --- Size and mode ---
+
+    function resize(newWidth, newHeight) {
+        newWidth = Math.max(1, Math.min(MAX_SIZE, newWidth | 0));
+        newHeight = Math.max(1, Math.min(MAX_SIZE, newHeight | 0));
+        const next = new Uint8Array(newWidth * newHeight);
+        // Keep the drawing, aligned top left
+        for (let y = 0; y < Math.min(height, newHeight); y++) {
+            for (let x = 0; x < Math.min(width, newWidth); x++) next[y * newWidth + x] = pixels[y * width + x];
+        }
+        width = newWidth;
+        height = newHeight;
+        pixels = next;
+        widthInput.value = width;
+        heightInput.value = height;
+        drawAll();
+        updateCode();
+    }
+
+    function setMode(newMode) {
+        mode = newMode;
+        document.querySelector('input[name=mode][value=' + mode + ']').checked = true;
+        const bitmap = mode === 'gfx' || mode === 'xbm';
+        document.getElementById('sizeRow').style.display = bitmap ? '' : 'none';
+        if (bitmap) {
+            resize(width, height);
+        } else {
+            resize(FIXED[mode][0], FIXED[mode][1]);
+        }
+    }
+
+    document.querySelectorAll('input[name=mode]').forEach(radio => radio.addEventListener('change', () => setMode(radio.value)));
+    widthInput.addEventListener('change', () => resize(+widthInput.value, height));
+    heightInput.addEventListener('change', () => resize(width, +heightInput.value));
+    document.querySelectorAll('[data-preset]').forEach(button => button.addEventListener('click', () => {
+        const [w, h] = button.dataset.preset.split('x').map(Number);
+        resize(w, h);
+    }));
+
+    // --- Tools ---
+
+    document.querySelectorAll('[data-shift]').forEach(button => button.addEventListener('click', () => {
+        const dir = button.dataset.shift;
+        const next = new Uint8Array(width * height);
+        const dx = dir === 'left' ? -1 : dir === 'right' ? 1 : 0;
+        const dy = dir === 'up' ? -1 : dir === 'down' ? 1 : 0;
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                next[((y + dy + height) % height) * width + ((x + dx + width) % width)] = pixels[y * width + x];
+            }
+        }
+        pixels = next;
+        drawAll();
+        updateCode();
+    }));
+    document.getElementById('invert').addEventListener('click', () => {
+        pixels = pixels.map(v => (v ? 0 : 1));
+        drawAll();
+        updateCode();
+    });
+    document.getElementById('clear').addEventListener('click', () => {
+        pixels = new Uint8Array(width * height);
+        drawAll();
+        updateCode();
+    });
+    document.querySelectorAll('input[name=format]').forEach(radio => radio.addEventListener('change', updateCode));
+    nameInput.addEventListener('input', scheduleCode);
+    document.getElementById('insert').addEventListener('click', () => vscode.postMessage({ command: 'insert', code: code() }));
+    document.getElementById('copy').addEventListener('click', () => vscode.postMessage({ command: 'copy', code: code() }));
+
+    // --- Loading ---
+
+    function load(data) {
+        mode = data.mode;
+        width = data.width;
+        height = data.height;
+        pixels = new Uint8Array(width * height);
+        data.rows.forEach((row, y) => {
+            for (let x = 0; x < width && x < row.length; x++) pixels[y * width + x] = row[x] === '1' ? 1 : 0;
+        });
+        nameInput.value = data.name;
+        document.querySelector('input[name=format][value=' + data.format + ']').checked = true;
+        setMode(mode);
+    }
+
+    window.addEventListener('message', event => {
+        if (event.data.command === 'load') load(event.data.data);
+    });
+
+    load(CONFIG.initial);
+})();

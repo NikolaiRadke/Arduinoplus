@@ -29,7 +29,10 @@
     "binary",
     "converter",
     "lcd",
-    "createChar"
+    "createChar",
+    "bitmap",
+    "oled",
+    "u8g2"
   ],
   "activationEvents": [
     "*"
