@@ -15,7 +15,8 @@
   "categories": [
     "Other",
     "Snippets",
-    "Education"
+    "Education",
+    "Themes"
   ],
   "keywords": [
     "arduino",
@@ -41,12 +42,12 @@
     "backup",
     "history",
     "color",
-    "rgb565",
     "neopixel",
     "melody",
     "tone",
     "rtttl",
-    "print"
+    "print",
+    "accessibility"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -155,6 +156,12 @@
         "title": "%command.print%",
         "category": "Arduino+",
         "icon": "$(file-pdf)"
+      },
+      {
+        "command": "arduinoplus.editorSettings",
+        "title": "%command.editorSettings%",
+        "category": "Arduino+",
+        "icon": "$(settings-gear)"
       }
     ],
     "keybindings": [
@@ -272,6 +279,10 @@
           "group": "5_sketch@2"
         },
         {
+          "command": "arduinoplus.editorSettings",
+          "group": "6_settings@1"
+        },
+        {
           "command": "arduinoplus.about",
           "group": "9_about@1"
         }
@@ -286,7 +297,33 @@
           "when": "!arduinoplus.isVSCode"
         }
       ]
-    }
+    },
+    "themes": [
+      {
+        "id": "Arduino+ Barrierefrei hell",
+        "label": "Arduino+ Barrierefrei hell",
+        "uiTheme": "vs",
+        "path": "./themes/accessible-light.json"
+      },
+      {
+        "id": "Arduino+ Barrierefrei dunkel",
+        "label": "Arduino+ Barrierefrei dunkel",
+        "uiTheme": "vs-dark",
+        "path": "./themes/accessible-dark.json"
+      },
+      {
+        "id": "Arduino+ Eigenes Schema hell",
+        "label": "Arduino+ Eigenes Schema hell",
+        "uiTheme": "vs",
+        "path": "./themes/custom-light.json"
+      },
+      {
+        "id": "Arduino+ Eigenes Schema dunkel",
+        "label": "Arduino+ Eigenes Schema dunkel",
+        "uiTheme": "vs-dark",
+        "path": "./themes/custom-dark.json"
+      }
+    ]
   },
   "scripts": {
     "package": "vsce package"

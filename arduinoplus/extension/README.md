@@ -26,6 +26,8 @@ Arduino+ integrates features that are terribly missed in the Arduino IDE 2.x for
 * **Sketch Snapshots**: The Arduino IDE has no history. Save the state of all tabs (including unsaved changes) with a note, compare it with the current state later and restore the whole sketch or single files. Before restoring, the current state is saved as snapshot, so nothing gets lost. Snapshots are stored in `~/.arduinoplus/snapshots/`.
 * **TODO List**: Shows all `TODO` and `FIXME` comments of the whole sketch (all tabs and `src/`). Click one to jump there.
 * **Print**: The Arduino IDE can't print. Arduino+ opens the current file or the whole sketch with syntax colors and line numbers in your browser, ready to print or to save as PDF.
+* **Editor Settings**: The Arduino IDE hides most editor settings. Switch on or off automatic closing of brackets and quotes, info pop-ups (with delay), notification pop-ups when compiling and word wrap, and set the font size. All changes apply immediately.
+* **Color Themes**: Two accessible themes, *Arduino+ Barrierefrei hell* (light) and *Arduino+ Barrierefrei dunkel* (dark). They use the Okabe-Ito palette, which stays distinguishable with all common kinds of color blindness, with bold keywords and italic comments. Or pick your own syntax colors with a live preview. *Arduino standard* brings back your previous theme.
 * **About Page**: Version, changelog and a button to uninstall Arduino+ completely.
 * 🌍 **Automatic language detection** based on IDE settings. Supported are: **en, de, es, fr, it**.
 

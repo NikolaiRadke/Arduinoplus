@@ -21,6 +21,7 @@ const { SnapshotManager } = require('./features/snapshotManager');
 const { ColorPicker } = require('./features/colorPicker');
 const { MelodyEditor } = require('./features/melodyEditor');
 const { printSketch } = require('./features/printManager');
+const { EditorSettings } = require('./features/editorSettings');
 const { loadTranslations, t } = require('./utils/localeLoader');
 const { isArduinoIDE } = require('./utils/host');
 
@@ -32,6 +33,7 @@ let pixelEditor;
 let snapshotManager;
 let colorPicker;
 let melodyEditor;
+let editorSettings;
 
 /**
  * Extension activation
@@ -69,6 +71,9 @@ function activate(context) {
 
     // Melody editor for tone()
     melodyEditor = new MelodyEditor(t);
+
+    // Editor settings and color themes
+    editorSettings = new EditorSettings(t, arduinoIDE);
 
     // Update status bar when active editor changes
     context.subscriptions.push(
@@ -142,6 +147,10 @@ function activate(context) {
         {
             name: 'arduinoplus.duplicateLine',
             handler: () => duplicateLine()
+        },
+        {
+            name: 'arduinoplus.editorSettings',
+            handler: () => editorSettings.show()
         },
         {
             name: 'arduinoplus.about',

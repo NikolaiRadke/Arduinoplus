@@ -4,6 +4,8 @@
 
 ### Features
 - Added printing: current file or whole sketch with syntax colors and line numbers, opened in the browser to print or save as PDF
+- Added editor settings: automatic brackets and quotes, info pop-ups, notification pop-ups, word wrap and font size
+- Added color themes: accessible light and dark themes based on the Okabe-Ito palette, and a custom theme with own syntax colors
 
 ## 1.1.1 18.11.2026
 

@@ -15,5 +15,6 @@
   "command.snapshots": "Instantanés...",
   "command.colorPicker": "Sélecteur de couleur...",
   "command.melodyEditor": "Éditeur de mélodies...",
-  "command.print": "Imprimer..."
+  "command.print": "Imprimer...",
+  "command.editorSettings": "Paramètres de l'éditeur..."
 }

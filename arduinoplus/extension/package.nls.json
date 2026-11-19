@@ -15,5 +15,6 @@
   "command.snapshots": "Snapshots...",
   "command.colorPicker": "Color Picker...",
   "command.melodyEditor": "Melody Editor...",
-  "command.print": "Print..."
+  "command.print": "Print...",
+  "command.editorSettings": "Editor Settings..."
 }
