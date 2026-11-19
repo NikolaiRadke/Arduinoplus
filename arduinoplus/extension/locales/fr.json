@@ -154,5 +154,14 @@
   "melody.durationsHint": "4 = noire, 8 = croche, négatif = pointée",
   "melody.usage": "Jouer avec {0}",
   "melody.example": "Charger un exemple...",
-  "about.uninstallVSCode": "Dans VS Code, Arduino+ se désinstalle depuis la vue Extensions. Vos extraits, ancres et instantanés dans ~/.arduinoplus sont conservés ; supprimez vous-même le dossier si vous n'en avez plus besoin."
+  "about.uninstallVSCode": "Dans VS Code, Arduino+ se désinstalle depuis la vue Extensions. Vos extraits, ancres et instantanés dans ~/.arduinoplus sont conservés ; supprimez vous-même le dossier si vous n'en avez plus besoin.",
+  "print.current": "Fichier actuel",
+  "print.all": "Tout le sketch ({0} fichiers)",
+  "print.colors": "Couleurs",
+  "print.numbers": "Numéros de ligne",
+  "print.size": "Police",
+  "print.print": "Imprimer",
+  "print.hint": "Dans la boîte de dialogue d'impression, vous pouvez aussi choisir \"Enregistrer au format PDF\". Les en-têtes et pieds de page du navigateur se désactivent sous \"Plus de paramètres\".",
+  "print.openFailed": "Impossible d'ouvrir le navigateur. La page d'impression se trouve ici : {0}",
+  "print.failed": "Échec de l'impression : {0}"
 }

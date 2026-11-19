@@ -20,6 +20,7 @@ const { PixelEditor } = require('./features/pixelEditor');
 const { SnapshotManager } = require('./features/snapshotManager');
 const { ColorPicker } = require('./features/colorPicker');
 const { MelodyEditor } = require('./features/melodyEditor');
+const { printSketch } = require('./features/printManager');
 const { loadTranslations, t } = require('./utils/localeLoader');
 const { isArduinoIDE } = require('./utils/host');
 
@@ -125,6 +126,10 @@ function activate(context) {
         {
             name: 'arduinoplus.melodyEditor',
             handler: () => melodyEditor.show()
+        },
+        {
+            name: 'arduinoplus.print',
+            handler: () => printSketch(t)
         },
         {
             name: 'arduinoplus.snapshots',

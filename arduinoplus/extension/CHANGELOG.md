@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+### Features
+- Added printing: current file or whole sketch with syntax colors and line numbers, opened in the browser to print or save as PDF
+
 ## 1.1.1 18.11.2026
 
 ### Features

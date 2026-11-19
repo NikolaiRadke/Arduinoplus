@@ -154,5 +154,14 @@
   "melody.durationsHint": "4 = semiminima, 8 = croma, negativo = puntata",
   "melody.usage": "Riproduci con {0}",
   "melody.example": "Carica esempio...",
-  "about.uninstallVSCode": "In VS Code Arduino+ si disinstalla dalla vista Estensioni. Snippet, ancore e snapshot in ~/.arduinoplus vengono mantenuti; elimina tu la cartella se non ti servono più."
+  "about.uninstallVSCode": "In VS Code Arduino+ si disinstalla dalla vista Estensioni. Snippet, ancore e snapshot in ~/.arduinoplus vengono mantenuti; elimina tu la cartella se non ti servono più.",
+  "print.current": "File attuale",
+  "print.all": "Tutto lo sketch ({0} file)",
+  "print.colors": "Colori",
+  "print.numbers": "Numeri di riga",
+  "print.size": "Carattere",
+  "print.print": "Stampa",
+  "print.hint": "Nella finestra di stampa puoi anche scegliere \"Salva come PDF\". Intestazioni e piè di pagina del browser si disattivano lì in \"Altre impostazioni\".",
+  "print.openFailed": "Impossibile aprire il browser. La pagina di stampa si trova qui: {0}",
+  "print.failed": "Stampa non riuscita: {0}"
 }

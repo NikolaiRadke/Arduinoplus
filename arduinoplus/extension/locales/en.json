@@ -154,5 +154,14 @@
   "melody.durationsHint": "4 = quarter, 8 = eighth, negative = dotted",
   "melody.usage": "Play with {0}",
   "melody.example": "Load example...",
-  "about.uninstallVSCode": "In VS Code you uninstall Arduino+ in the Extensions view. Your snippets, anchors and snapshots in ~/.arduinoplus are kept; delete the folder yourself if you no longer need them."
+  "about.uninstallVSCode": "In VS Code you uninstall Arduino+ in the Extensions view. Your snippets, anchors and snapshots in ~/.arduinoplus are kept; delete the folder yourself if you no longer need them.",
+  "print.current": "Current file",
+  "print.all": "Whole sketch ({0} files)",
+  "print.colors": "Colors",
+  "print.numbers": "Line numbers",
+  "print.size": "Font",
+  "print.print": "Print",
+  "print.hint": "In the print dialog you can also choose \"Save as PDF\". The browser's headers and footers can be switched off there under \"More settings\".",
+  "print.openFailed": "The browser could not be opened. The print page is here: {0}",
+  "print.failed": "Printing failed: {0}"
 }

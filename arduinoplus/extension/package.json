@@ -2,7 +2,7 @@
   "name": "arduinoplus",
   "displayName": "Arduino+",
   "description": "Essential IDE helpers for Arduino development",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "NikolaiRadke",
   "icon": "resources/icon.png",
   "galleryBanner": {
@@ -32,7 +32,6 @@
     "fixme",
     "hex",
     "binary",
-    "converter",
     "lcd",
     "createChar",
     "bitmap",
@@ -46,7 +45,8 @@
     "neopixel",
     "melody",
     "tone",
-    "rtttl"
+    "rtttl",
+    "print"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -149,6 +149,12 @@
         "title": "%command.melodyEditor%",
         "category": "Arduino+",
         "icon": "$(music)"
+      },
+      {
+        "command": "arduinoplus.print",
+        "title": "%command.print%",
+        "category": "Arduino+",
+        "icon": "$(file-pdf)"
       }
     ],
     "keybindings": [
@@ -260,6 +266,10 @@
         {
           "command": "arduinoplus.snapshots",
           "group": "5_sketch@1"
+        },
+        {
+          "command": "arduinoplus.print",
+          "group": "5_sketch@2"
         },
         {
           "command": "arduinoplus.about",

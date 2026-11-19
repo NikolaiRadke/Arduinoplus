@@ -14,5 +14,6 @@
   "command.lcdCharEditor": "Editor de píxeles (LCD, matriz, mapa de bits)...",
   "command.snapshots": "Instantáneas...",
   "command.colorPicker": "Selector de color...",
-  "command.melodyEditor": "Editor de melodías..."
+  "command.melodyEditor": "Editor de melodías...",
+  "command.print": "Imprimir..."
 }
